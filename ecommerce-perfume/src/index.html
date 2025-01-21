@@ -13,6 +13,7 @@
             <ul>
                 <a href="index.html">Home</a>
                 <a href="products.html">Products</a>
+                <a href="cart.html">Shopping Cart</a>
                 <a href="about.html">About</a>
                 <a href="contact.html">Contact</a>
             </ul>
@@ -20,6 +21,16 @@
     </header>
     
     <main>
+        <!-- Hero Section -->
+        <section id="hero">
+            <div class="hero-content">
+                <h2>Discover Your Signature Scent</h2>
+                <p>Explore our exclusive collection of luxurious perfumes.</p>
+                <a href="products.html" class="btn">Shop Now</a>
+            </div>
+        </section>
+
+        <!-- Featured Products Section -->
         <section id="products">
             <h2>Featured Products</h2>
             <div class="product-list">
@@ -46,12 +57,67 @@
                 </div>
             </div>
         </section>
+
+        <!-- Testimonials Section -->
+        <section id="testimonials">
+            <h2>What Our Customers Say</h2>
+            <div class="testimonial-list">
+                <div class="testimonial-item">
+                    <p>"The best perfume I've ever used! The scent lasts all day."</p>
+                    <span>- Jane Doe</span>
+                </div>
+                <div class="testimonial-item">
+                    <p>"Amazing quality and beautiful packaging. Highly recommend!"</p>
+                    <span>- John Smith</span>
+                </div>
+                <div class="testimonial-item">
+                    <p>"I love the variety of scents available. There's something for everyone."</p>
+                    <span>- Emily Johnson</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter Subscription Section -->
+        <section id="newsletter">
+            <h2>Subscribe to Our Newsletter</h2>
+            <p>Get the latest updates on new products and upcoming sales.</p>
+            <form action="subscribe.php" method="post">
+                <input type="email" name="email" placeholder="Enter your email" required>
+                <button type="submit">Subscribe</button>
+            </form>
+        </section>
     </main>
     
     <footer>
         <p>&copy; 2025 Scentsation by JC. All rights reserved.</p>
     </footer>
     
-    <script src="scripts/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+            const addToCartButtons = document.querySelectorAll('.product-item button');
+            addToCartButtons.forEach(button => {
+                button.addEventListener('click', addToCart);
+            });
+
+            function addToCart(event) {
+                const productItem = event.target.closest('.product-item');
+                const productName = productItem.querySelector('h3').textContent;
+                const productPrice = productItem.querySelector('span').textContent;
+                const productImage = productItem.querySelector('img').src;
+
+                const product = {
+                    name: productName,
+                    price: productPrice,
+                    image: productImage
+                };
+
+                cart.push(product);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                alert(`${productName} has been added to your cart.`);
+            }
+        });
+    </script>
 </body>
 </html>

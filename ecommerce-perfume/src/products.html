@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product - Scentsation by JC</title>
+    <title>Products - Scentsation by JC</title>
     <link rel="stylesheet" href="styles/styles.css">
     <style>
         body {
@@ -38,7 +38,7 @@
         }
 
         nav a:hover {
-            background-color: #FFF0F5; /* Gold */
+            background-color: #FFD700; /* Gold */
         }
 
         .container {
@@ -59,6 +59,12 @@
             padding: 10px;
             text-align: center;
             width: 30%;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .product-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .product-item img {
@@ -89,6 +95,7 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s ease;
         }
 
         .product-item button:hover {
@@ -104,6 +111,18 @@
             bottom: 0;
             width: 100%;
         }
+
+        @media (max-width: 768px) {
+            .product-item {
+                width: 45%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .product-item {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -113,21 +132,89 @@
     <nav>
         <a href="index.html">Home</a>
         <a href="products.html">Products</a>
+        <a href="cart.html">Shopping Cart</a>
         <a href="about.html">About</a>
         <a href="contact.html">Contact</a>
     </nav>
     <div class="container">
-        <div class="product">
-            <img src="images/perfume.jpg" alt="Perfume Image">
-            <h2>Perfume Name</h2>
-            <p class="description">This is a detailed description of the perfume. It includes notes, ingredients, and other relevant information.</p>
-            <p class="price">$49.99</p>
-            <button>Add to Cart</button>
-        </div>
+        <section id="products">
+            <h2>Our Products</h2>
+            <div class="product-list">
+                <div class="product-item">
+                    <img src="images/perfume1.jpg" alt="Perfume 1">
+                    <h3>Perfume 1</h3>
+                    <p>Description of Perfume 1.</p>
+                    <span>$49.99</span>
+                    <button>Add to Cart</button>
+                </div>
+                <div class="product-item">
+                    <img src="images/perfume2.jpg" alt="Perfume 2">
+                    <h3>Perfume 2</h3>
+                    <p>Description of Perfume 2.</p>
+                    <span>$59.99</span>
+                    <button>Add to Cart</button>
+                </div>
+                <div class="product-item">
+                    <img src="images/perfume3.jpg" alt="Perfume 3">
+                    <h3>Perfume 3</h3>
+                    <p>Description of Perfume 3.</p>
+                    <span>$39.99</span>
+                    <button>Add to Cart</button>
+                </div>
+                <div class="product-item">
+                    <img src="images/perfume4.jpg" alt="Perfume 4">
+                    <h3>Perfume 4</h3>
+                    <p>Description of Perfume 4.</p>
+                    <span>$69.99</span>
+                    <button>Add to Cart</button>
+                </div>
+                <div class="product-item">
+                    <img src="images/perfume5.jpg" alt="Perfume 5">
+                    <h3>Perfume 5</h3>
+                    <p>Description of Perfume 5.</p>
+                    <span>$79.99</span>
+                    <button>Add to Cart</button>
+                </div>
+                <div class="product-item">
+                    <img src="images/perfume6.jpg" alt="Perfume 6">
+                    <h3>Perfume 6</h3>
+                    <p>Description of Perfume 6.</p>
+                    <span>$89.99</span>
+                    <button>Add to Cart</button>
+                </div>
+            </div>
+        </section>
     </div>
     <footer>
         <p>&copy; 2025 Scentsation by JC. All rights reserved.</p>
     </footer>
-    <script src="scripts/main.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+            const addToCartButtons = document.querySelectorAll('.product-item button');
+            addToCartButtons.forEach(button => {
+                button.addEventListener('click', addToCart);
+            });
+
+            function addToCart(event) {
+                const productItem = event.target.closest('.product-item');
+                const productName = productItem.querySelector('h3').textContent;
+                const productPrice = productItem.querySelector('span').textContent;
+                const productImage = productItem.querySelector('img').src;
+
+                const product = {
+                    name: productName,
+                    price: productPrice,
+                    image: productImage
+                };
+
+                cart.push(product);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                alert(`${productName} has been added to your cart.`);
+            }
+        });
+    </script>
 </body>
 </html>
