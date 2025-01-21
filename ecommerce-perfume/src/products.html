@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product - Scentsation by JC</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #FFF0F5; /* Light Pink background */
+        }
+
+        header {
+            background-color: #FFC0CB; /* Soft Pink */
+            color: #333; /* Dark Gray text */
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #FFB6C1; /* Light Pink */
+        }
+
+        nav a {
+            color: #333; /* Dark Gray text */
+            padding: 14px 20px;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        nav a:hover {
+            background-color: #FFF0F5; /* Gold */
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        .product-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .product-item {
+            background-color: #FFFFFF; /* White background */
+            border: 1px solid #DDD;
+            border-radius: 5px;
+            margin: 10px;
+            padding: 10px;
+            text-align: center;
+            width: 30%;
+        }
+
+        .product-item img {
+            max-width: 100%;
+            height: auto;
+            border-bottom: 1px solid #DDD;
+            padding-bottom: 10px;
+        }
+
+        .product-item h3 {
+            font-size: 1.5em;
+            margin: 10px 0;
+        }
+
+        .product-item p {
+            color: #666; /* Dark Gray */
+        }
+
+        .product-item span {
+            font-size: 1.2em;
+            color: #333; /* Dark Gray */
+        }
+
+        .product-item button {
+            padding: 10px;
+            background-color: #FFC0CB; /* Soft Pink */
+            color: #333; /* Dark Gray text */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .product-item button:hover {
+            background-color: #FFB6C1; /* Light Pink */
+        }
+
+        footer {
+            background-color: #FFC0CB; /* Soft Pink */
+            color: #333; /* Dark Gray text */
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Scentsation by JC</h1>
+    </header>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="products.html">Products</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+    </nav>
+    <div class="container">
+        <div class="product">
+            <img src="images/perfume.jpg" alt="Perfume Image">
+            <h2>Perfume Name</h2>
+            <p class="description">This is a detailed description of the perfume. It includes notes, ingredients, and other relevant information.</p>
+            <p class="price">$49.99</p>
+            <button>Add to Cart</button>
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2025 Scentsation by JC. All rights reserved.</p>
+    </footer>
+    <script src="scripts/main.js"></script>
+</body>
+</html>
