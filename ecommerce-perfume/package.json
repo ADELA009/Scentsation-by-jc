@@ -4,7 +4,7 @@
   "description": "An e-commerce website for selling perfumes.",
   "main": "src/index.html",
   "scripts": {
-    "start": "live-server src",
+    "start": "live-server src/index.html",
     "build": "echo 'Build process not defined yet.'"
   },
   "keywords": [
@@ -12,7 +12,7 @@
     "perfume",
     "shopping"
   ],
-  "author": "Your Name",
+  "author": "Adela",
   "license": "MIT",
   "dependencies": {
     "live-server": "^1.2.1"

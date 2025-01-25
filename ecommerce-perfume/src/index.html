@@ -5,18 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>E-commerce Perfume</title>
     <link rel="stylesheet" href="styles/styles.css">
+    <script src="scripts/main.js" defer></script>
 </head>
 <body>
     <header>
-        <h1>Welcome to Our Perfume Store</h1>
         <nav>
-            <ul>
-                <a href="index.html">Home</a>
-                <a href="products.html">Products</a>
-                <a href="cart.html">Shopping Cart</a>
-                <a href="about.html">About</a>
-                <a href="contact.html">Contact</a>
+            <div class="logo">Scentsation by JC</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="cart.html">Shopping Cart</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
             </ul>
+            <div class="menu-toggle" id="mobile-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </nav>
     </header>
     
@@ -24,100 +30,64 @@
         <!-- Hero Section -->
         <section id="hero">
             <div class="hero-content">
-                <h2>Discover Your Signature Scent</h2>
-                <p>Explore our exclusive collection of luxurious perfumes.</p>
+                <h1>Welcome to Our Perfume Store</h1>
+                <p>Discover the best fragrances for you.</p>
                 <a href="products.html" class="btn">Shop Now</a>
             </div>
         </section>
 
-        <!-- Featured Products Section -->
-        <section id="products">
+        <!-- Slideshow Section -->
+        <section id="slideshow">
+            <div class="slideshow-container">
+                <div class="mySlides fade">
+                    <img src="images/perf 2.jfif" alt="Perfume 2">
+                </div>
+                <div class="mySlides fade">
+                    <img src="images/perf3.jfif" alt="Perfume 3">
+                </div>
+                <div class="mySlides fade">
+                    <img src="images/perf4.jfif" alt="Perfume 4">
+                </div>
+            </div>
+            <br>
+            <div style="text-align:center">
+                <span class="dot"></span> 
+                <span class="dot"></span> 
+                <span class="dot"></span> 
+            </div>
+        </section>
+
+        <!-- Product Showcase Section -->
+        <section id="product-showcase">
             <h2>Featured Products</h2>
             <div class="product-list">
                 <div class="product-item">
-                    <img src="path/to/image1.jpg" alt="Perfume 1">
-                    <h3>Perfume 1</h3>
+                    <img src="images/perf3.jfif" alt="Perfume 1">
+                    <h3>9 Pm</h3>
                     <p>Description of Perfume 1.</p>
                     <span>$49.99</span>
                     <button>Add to Cart</button>
                 </div>
                 <div class="product-item">
-                    <img src="path/to/image2.jpg" alt="Perfume 2">
-                    <h3>Perfume 2</h3>
+                    <img src="images/perf.jfif" alt="Perfume 2">
+                    <h3>Channel</h3>
                     <p>Description of Perfume 2.</p>
                     <span>$59.99</span>
                     <button>Add to Cart</button>
                 </div>
                 <div class="product-item">
-                    <img src="path/to/image3.jpg" alt="Perfume 3">
-                    <h3>Perfume 3</h3>
+                    <img src="images/perf 2.jfif" alt="Perfume 3">
+                    <h3>Victoria's secret</h3>
                     <p>Description of Perfume 3.</p>
                     <span>$39.99</span>
                     <button>Add to Cart</button>
                 </div>
             </div>
         </section>
-
-        <!-- Testimonials Section -->
-        <section id="testimonials">
-            <h2>What Our Customers Say</h2>
-            <div class="testimonial-list">
-                <div class="testimonial-item">
-                    <p>"The best perfume I've ever used! The scent lasts all day."</p>
-                    <span>- Jane Doe</span>
-                </div>
-                <div class="testimonial-item">
-                    <p>"Amazing quality and beautiful packaging. Highly recommend!"</p>
-                    <span>- John Smith</span>
-                </div>
-                <div class="testimonial-item">
-                    <p>"I love the variety of scents available. There's something for everyone."</p>
-                    <span>- Emily Johnson</span>
-                </div>
-            </div>
-        </section>
-
-        <!-- Newsletter Subscription Section -->
-        <section id="newsletter">
-            <h2>Subscribe to Our Newsletter</h2>
-            <p>Get the latest updates on new products and upcoming sales.</p>
-            <form action="subscribe.php" method="post">
-                <input type="email" name="email" placeholder="Enter your email" required>
-                <button type="submit">Subscribe</button>
-            </form>
-        </section>
     </main>
     
     <footer>
         <p>&copy; 2025 Scentsation by JC. All rights reserved.</p>
     </footer>
-    
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-            const addToCartButtons = document.querySelectorAll('.product-item button');
-            addToCartButtons.forEach(button => {
-                button.addEventListener('click', addToCart);
-            });
-
-            function addToCart(event) {
-                const productItem = event.target.closest('.product-item');
-                const productName = productItem.querySelector('h3').textContent;
-                const productPrice = productItem.querySelector('span').textContent;
-                const productImage = productItem.querySelector('img').src;
-
-                const product = {
-                    name: productName,
-                    price: productPrice,
-                    image: productImage
-                };
-
-                cart.push(product);
-                localStorage.setItem('cart', JSON.stringify(cart));
-                alert(`${productName} has been added to your cart.`);
-            }
-        });
-    </script>
 </body>
 </html>
