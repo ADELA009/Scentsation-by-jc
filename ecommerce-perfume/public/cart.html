@@ -54,6 +54,7 @@
             });
 
             const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const productName = JSON.parse(localStorage.getItem('cartItem')) || [];
             const cartList = document.querySelector('.cart-list');
             const emptyCartMessage = document.getElementById('empty-cart-message');
             const checkoutButton = document.getElementById('checkout-button');

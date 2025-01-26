@@ -68,7 +68,7 @@
 
     <script src="scripts/checkout.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+            document.addEventListener('DOMContentLoaded', () => {
             const checkoutForm = document.getElementById('checkout-form');
             const stateSelect = document.getElementById('state');
             const locationSelect = document.getElementById('location');
@@ -136,13 +136,12 @@
                                 display_name: "Pickup Location",
                                 variable_name: "location",
                                 value: orderDetails.location
-                            },
-
+                            } ,
                             {
                                 display_name: "Items",
                                 variable_name: "itemDetails",
                                 value: orderDetails.cart
-                            }
+                            } 
                         ]
                     },
                     callback: function(response) {
