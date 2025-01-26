@@ -59,11 +59,11 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(data => {
             if (data.status === 'success') {
                 window.location.href = data.paymentUrl;
-            }
+            } 
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('Failed to initiate payment. Please try again.');
+            
         });
     });
 });
