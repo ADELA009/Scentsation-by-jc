@@ -45,7 +45,8 @@ nav ul li a {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-nav ul li a:hover {
+nav ul li a:hover,
+nav ul li a.active {
     background-color: #FFD700; /* Gold */
     color: #FFF;
 }

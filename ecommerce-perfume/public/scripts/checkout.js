@@ -9,60 +9,18 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
+    const checkoutForm = document.getElementById('checkout-form');
     const stateSelect = document.getElementById('state');
     const locationSelect = document.getElementById('location');
 
     const locations = {
-        Lagos: [
-            "Ikeja",
-            "Victoria Island",
-            "Lekki",
-            "Yaba",
-            "Surulere"
-        ],
-        Abuja: [
-            "Wuse",
-            "Garki",
-            "Maitama",
-            "Asokoro",
-            "Gwarinpa"
-        ],
-        PortHarcort: [
-            "GRA",
-            "Rumuokoro",
-            "D-Line",
-            "Eleme"
-        ],
-        Kano: [
-            "Nassarawa",
-            "Sabon Gari",
-            "Tarauni",
-            "Gwale",
-            "Fagge"
-        ],
-        Ibadan: [
-            "Bodija",
-            "Ring Road",
-            "Dugbe",
-            "Mokola",
-            "Challenge"
-        ],
-        Ondo: [
-            "Akure post office",
-            "Owo post office",
-            "Ondo Town",
-            "Ikare",
-            "Okitipupa"
-        ],
-        Edo: [
-            "Benin City",
-            "Auchi",
-            "Ikpoba Hill",
-            "Ugbowo",
-            "Ekehuan", 
-            "Ekpoma"  
-        ]
-        // Add more states and their locations as needed
+        Lagos: ["Ikeja", "Victoria Island", "Lekki", "Yaba", "Surulere"],
+        Abuja: ["Wuse", "Garki", "Maitama", "Asokoro", "Gwarinpa"],
+        PortHarcourt: ["GRA", "Rumuokoro", "D-Line", "Eleme"],
+        Kano: ["Nassarawa", "Sabon Gari", "Tarauni", "Gwale", "Fagge"],
+        Ibadan: ["Bodija", "Ring Road", "Dugbe", "Mokola", "Challenge"],
+        Ondo: ["Akure post office", "Owo post office", "Ondo Town", "Ikare", "Okitipupa"],
+        Edo: ["Benin City", "Auchi", "Ikpoba Hill", "Ugbowo", "Ekehuan", "Ekpoma"]
     };
 
     stateSelect.addEventListener('change', () => {
@@ -78,8 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    const checkoutForm = document.getElementById('checkout-form');
-
     checkoutForm.addEventListener('submit', (event) => {
         event.preventDefault();
 
@@ -92,63 +48,22 @@ document.addEventListener('DOMContentLoaded', () => {
             cart: JSON.parse(localStorage.getItem('cart')) || []
         };
 
-        const amount = calculateOrderAmount(orderDetails.cart);
-
-        payWithPaystack(orderDetails, amount);
-    });
-
-    function calculateOrderAmount(cart) {
-        // Calculate the total order amount based on the cart items
-        return cart.reduce((total, item) => total + parseFloat(item.price.replace('₦', '').replace(',', '')) * item.quantity * 100, 0);
-    }
-
-    function payWithPaystack(orderDetails, amount) {
-        const handler = PaystackPop.setup({
-            key: 'pk_test_68dbfa8350773116088d7bcf0eaee6edeb589f03', // Replace with your Paystack public key
-            email: orderDetails.email,
-            amount: amount,
-            currency: 'NGN',
-            ref: 'PS_' + Math.floor((Math.random() * 1000000000) + 1), // Generate a unique reference
-            metadata: {
-                custom_fields: [
-                    {
-                        display_name: "Name",
-                        variable_name: "name",
-                        value: orderDetails.name
-                    },
-                    {
-                        display_name: "Pickup Location",
-                        variable_name: "location",
-                        value: orderDetails.location
-                    }
-                ]
+        fetch('/api/pay', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
             },
-            callback: function(response) {
-                // Payment successful, send order details to the server
-                orderDetails.reference = response.reference;
-
-                fetch('/api/orders', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(orderDetails)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    alert('Order placed successfully!');
-                    localStorage.removeItem('cart');
-                    window.location.href = 'index.html';
-                })
-                .catch(error => {
-                    alert('Failed to place order. Please try again.');
-                });
-            },
-            onClose: function() {
-                alert('Payment cancelled.');
+            body: JSON.stringify(orderDetails)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                window.location.href = data.paymentUrl;
             }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Failed to initiate payment. Please try again.');
         });
-
-        handler.openIframe();
-    }
+    });
 });
