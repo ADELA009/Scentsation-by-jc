@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - Scentsation by JC</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <script src="scripts/main.js" defer></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Scentsation by JC</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="cart.html">Shopping Cart</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <div class="menu-toggle" id="mobile-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+    
+    <main>
+        <!-- Search Section -->
+        <section id="search">
+            <input type="text" id="search-input" placeholder="Search for products by name...">
+            <button id="search-button">Search</button>
+        </section>
+
+        <!-- Product Showcase Section -->
+        <section id="product-showcase">
+            <h2>Featured Products</h2>
+            <div class="product-list">
+                <div class="product-item" data-quantity="10">
+                    <img src="images/9pm.jfif" alt="Perfume 1">
+                    <h3>9 Pm</h3>
+                    <p>Description of Perfume 1.</p>
+                    <span>₦37,500</span>
+                    <p>Available: <span class="available-quantity">10</span></p>
+                    <label for="quantity">Quantity:</label>
+                    <input type="number" id="quantity" name="quantity" min="1" max="10" value="1">
+                    <button>Add to Cart</button>
+                </div>
+                <div class="product-item" data-quantity="5">
+                    <img src="images/channel.jfif" alt="Perfume 2">
+                    <h3>Channel</h3>
+                    <p>Description of Perfume 2.</p>
+                    <span>₦45,000</span>
+                    <p>Available: <span class="available-quantity">5</span></p>
+                    <label for="quantity">Quantity:</label>
+                    <input type="number" id="quantity" name="quantity" min="1" max="5" value="1">
+                    <button>Add to Cart</button>
+                </div>
+                <div class="product-item" data-quantity="12">
+                    <img src="images/dolce.jfif" alt="Perfume 3">
+                    <h3>Dolce and Gabbana</h3>
+                    <p>Description of Perfume 3.</p>
+                    <span>₦50,000</span>
+                    <p>Available: <span class="available-quantity">12</span></p>
+                    <label for="quantity">Quantity:</label>
+                    <input type="number" id="quantity" name="quantity" min="1" max="12" value="1">
+                    <button>Add to Cart</button>
+                </div>
+                <div class="product-item" data-quantity="7">
+                    <img src="images/dior.jfif" alt="Perfume 4">
+                    <h3>Dior</h3>
+                    <p>Description of Perfume 4.</p>
+                    <span>₦55,500</span>
+                    <p>Available: <span class="available-quantity">7</span></p>
+                    <label for="quantity">Quantity:</label>
+                    <input type="number" id="quantity" name="quantity" min="1" max="7" value="1">
+                    <button>Add to Cart</button>
+                </div>
+                <div class="product-item" data-quantity="6">
+                    <img src="images/armani.jfif" alt="Perfume 5">
+                    <h3>Armani</h3>
+                    <p>Description of Perfume 5.</p>
+                    <span>₦25,000</span>
+                    <p>Available: <span class="available-quantity">6</span></p>
+                    <label for="quantity">Quantity:</label>
+                    <input type="number" id="quantity" name="quantity" min="1" max="6" value="1">
+                    <button>Add to Cart</button>
+                </div>
+                <div class="product-item" data-quantity="8">
+                    <img src="images/vanilla.jfif" alt="Perfume 6">
+                    <h3>Vanilla Crush</h3>
+                    <p>Description of Perfume 3.</p>
+                    <span>65,000</span>
+                    <p>Available: <span class="available-quantity">8</span></p>
+                    <label for="quantity">Quantity:</label>
+                    <input type="number" id="quantity" name="quantity" min="1" max="8" value="1">
+                    <button>Add to Cart</button>
+                </div>
+                <!-- Add more products here -->
+            </div>
+            <p id="search-message"></p>
+        </section>
+    </main>
+    
+    <footer>
+        <p>&copy; 2025 Scentsation by JC. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const searchInput = document.getElementById('search-input');
+            const searchButton = document.getElementById('search-button');
+            const productList = document.querySelector('.product-list');
+            const searchMessage = document.getElementById('search-message');
+
+            searchButton.addEventListener('click', () => {
+                const query = searchInput.value.toLowerCase();
+                const products = document.querySelectorAll('.product-item');
+                let found = false;
+
+                products.forEach(product => {
+                    const productName = product.querySelector('h3').textContent.toLowerCase();
+
+                    if (productName.includes(query)) {
+                        product.style.display = 'block';
+                        found = true;
+                    } else {
+                        product.style.display = 'none';
+                    }
+                });
+
+                if (!found) {
+                    searchMessage.textContent = `${query} is not available.`;
+                    searchMessage.style.display = 'block';
+                } else {
+                    searchMessage.style.display = 'none';
+                }
+            });
+
+            const addToCartButtons = document.querySelectorAll('.product-item button');
+            addToCartButtons.forEach(button => {
+                button.addEventListener('click', addToCart);
+            });
+
+            function addToCart(event) {
+                const productItem = event.target.closest('.product-item');
+                const productName = productItem.querySelector('h3').textContent;
+                const productPrice = productItem.querySelector('span').textContent.replace('₦', '').replace(',', '');
+                const productImage = productItem.querySelector('img').src;
+                const productQuantity = parseInt(productItem.querySelector('input[name="quantity"]').value);
+                const availableQuantity = parseInt(productItem.getAttribute('data-quantity'));
+
+                if (productQuantity > availableQuantity) {
+                    alert(`Only ${availableQuantity} items available for ${productName}.`);
+                    return;
+                }
+
+                const existingProductIndex = cart.findIndex(item => item.name === productName);
+                if (existingProductIndex !== -1) {
+                    cart[existingProductIndex].quantity += productQuantity;
+                } else {
+                    const product = {
+                        name: productName,
+                        price: parseFloat(productPrice),
+                        image: productImage,
+                        quantity: productQuantity
+                    };
+                    cart.push(product);
+                }
+
+                localStorage.setItem('cart', JSON.stringify(cart));
+                alert(`${productQuantity} ${productName}(s) have been added to your cart.`);
+            }
+        });
+    </script>
+</body>
+</html>

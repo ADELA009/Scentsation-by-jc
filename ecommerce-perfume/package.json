@@ -1,20 +1,17 @@
 {
-  "name": "ecommerce-perfume",
+  "name": "scentsation-by-jc",
   "version": "1.0.0",
-  "description": "An e-commerce website for selling perfumes.",
-  "main": "src/index.html",
+  "main": "index.js",
   "scripts": {
-    "start": "live-server src/index.html",
-    "build": "echo 'Build process not defined yet.'"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [
-    "ecommerce",
-    "perfume",
-    "shopping"
-  ],
+  "keywords": [],
   "author": "Adela",
-  "license": "MIT",
+  "license": "ISC",
+  "description": "",
   "dependencies": {
-    "live-server": "^1.2.1"
+    "body-parser": "^1.20.3",
+    "express": "^4.21.2",
+    "nodemailer": "^6.10.0"
   }
 }
