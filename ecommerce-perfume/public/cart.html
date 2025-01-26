@@ -51,36 +51,24 @@
     <main>
         <section id="cart">
             <h2>Your Shopping Cart</h2>
-            <div class="cart-list">
-                <!-- Cart items will be dynamically added here -->
-            </div>
-            <p id="empty-cart-message">Your cart is empty.</p>
+            <div id="cart-list"></div>
+            <p id="empty-cart-message" style="display: none;">Your cart is empty.</p>
             <p>Total Price: <span id="total-price">₦0.00</span></p>
-            <a href="checkout.html" class="checkout-button" id="checkout-button" style="display: none;">Proceed to Checkout</a>
+            <button id="checkout-button" style="display: none;"><a href="checkout.html">Proceed to Checkout</a></button>
         </section>
     </main>
     
     <footer>
         <p>&copy; 2025 Scentsation by JC. All rights reserved.</p>
     </footer>
-    
-    <script src="scripts/cart.js"></script>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const menuToggle = document.querySelector('.menu-toggle');
-            const nav = document.querySelector('nav ul');
-
-            menuToggle.addEventListener('click', () => {
-                menuToggle.classList.toggle('active');
-                nav.classList.toggle('active');
-            });
-
-            const cart = JSON.parse(localStorage.getItem('cart')) || [];
-            const productName = JSON.parse(localStorage.getItem('cartItem')) || [];
-            const cartList = document.querySelector('.cart-list');
+            const cartList = document.getElementById('cart-list');
             const emptyCartMessage = document.getElementById('empty-cart-message');
-            const checkoutButton = document.getElementById('checkout-button');
             const totalPriceElement = document.getElementById('total-price');
+            const checkoutButton = document.getElementById('checkout-button');
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
             function renderCart() {
                 cartList.innerHTML = '';
