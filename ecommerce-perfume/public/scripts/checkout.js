@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const menuToggle = document.querySelector('.menu-toggle');
+    const menuToggle = document.querySelector('.menu-toggle')
     const nav = document.querySelector('nav ul');
 
     menuToggle.addEventListener('click', () => {
@@ -27,10 +27,9 @@ document.addEventListener('DOMContentLoaded', () => {
             "Asokoro",
             "Gwarinpa"
         ],
-        "Port Harcourt": [
+        PortHarcort: [
             "GRA",
             "Rumuokoro",
-            "Trans Amadi",
             "D-Line",
             "Eleme"
         ],
@@ -100,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function calculateOrderAmount(cart) {
         // Calculate the total order amount based on the cart items
-        return cart.reduce((total, item) => total + parseFloat(item.price.replace('$', '')) * 100, 0);
+        return cart.reduce((total, item) => total + parseFloat(item.price.replace('₦', '').replace(',', '')) * item.quantity * 100, 0);
     }
 
     function payWithPaystack(orderDetails, amount) {

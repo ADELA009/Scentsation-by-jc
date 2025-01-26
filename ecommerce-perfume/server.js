@@ -36,6 +36,7 @@ app.post('/api/contact', (req, res) => {
     // Send mail
     transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
+            console.error('Error sending email:', error);
             return res.status(500).json({ error: 'Failed to send message. Please try again.' });
         }
         res.status(200).json({ message: 'Message sent successfully!' });
@@ -45,31 +46,44 @@ app.post('/api/contact', (req, res) => {
 // Order endpoint
 app.post('/api/orders', async (req, res) => {
     const { name, location, email, cart, reference } = req.body;
+    const date = new Date().toLocaleString();
 
     try {
         // Send order confirmation email
         const transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-                user: EMAIL_USER,
-                pass: EMAIL_PASS
+                user: 'adeyekunadelola2009@gmail.com', // Replace with your email
+                pass: 'ddpp geur thgw foww'   // Replace with your email password
             }
         });
+
+        const itemsDetails = cart.map(item => {
+            return `${item.name} (x${item.quantity}) - ₦${item.price.toFixed(2)}`;
+        }).join('\n');
+
+        const totalAmount = cart.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
 
         const mailOptions = {
-            from: EMAIL_USER,
+            from: 'adeyekunadelola2009@gmail.com', // Replace with your email
             to: email,
-            subject: 'Order Confirmation - Scentsation by JC',
-            text: `Thank you for your order, ${name}! Your order will be ready for pickup at our ${location} location. Your payment reference is ${reference}.`
+            subject: 'Order Confirmation',
+            text: `Thank you for your order, ${name}!\n\nOrder Details:\nReference: ${reference}\nLocation: ${location}\nDate: ${date}\n\nItems:\n${itemsDetails}\n\nTotal Amount: ₦${totalAmount}`
         };
 
-        transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-                return res.status(500).send('Failed to send confirmation email.');
-            }
-            res.status(200).send('Order placed successfully.');
-        });
+        const adminMailOptions = {
+            from: 'adeyekunadelola2009@gmail.com', // Replace with your email
+            to: 'adeyekunadelola2009@gmail.com', // Replace with your email
+            subject: 'New Order Received',
+            text: `A new order has been placed by ${name}.\n\nOrder Details:\nReference: ${reference}\nLocation: ${location}\nDate: ${date}\n\nItems:\n${itemsDetails}\n\nTotal Amount: ₦${totalAmount}`
+        };
+
+        await transporter.sendMail(mailOptions);
+        await transporter.sendMail(adminMailOptions);
+
+        res.status(200).send('Order placed successfully.');
     } catch (error) {
+        console.error('Error sending email:', error);
         res.status(400).send(`Failed to place order: ${error.message}`);
     }
 });

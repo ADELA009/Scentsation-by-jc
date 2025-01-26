@@ -83,17 +83,17 @@
                 // Add more states and locations as needed
             };
 
-            stateSelect.addEventListener('change', (event) => {
-                const selectedState = event.target.value;
-                const locations = locationsByState[selectedState] || [];
-
+            stateSelect.addEventListener('change', () => {
+                const selectedState = stateSelect.value;
                 locationSelect.innerHTML = '<option value="">Select a location</option>';
-                locations.forEach(location => {
-                    const option = document.createElement('option');
-                    option.value = location;
-                    option.textContent = location;
-                    locationSelect.appendChild(option);
-                });
+                if (selectedState && locationsByState[selectedState]) {
+                    locationsByState[selectedState].forEach(location => {
+                        const option = document.createElement('option');
+                        option.value = `${selectedState} - ${location}`;
+                        option.textContent = `${selectedState} - ${location}`;
+                        locationSelect.appendChild(option);
+                    });
+                }
             });
 
             checkoutForm.addEventListener('submit', (event) => {
@@ -133,14 +133,15 @@
                                 value: orderDetails.name
                             },
                             {
-                                display_name: "State",
-                                variable_name: "state",
-                                value: orderDetails.state
-                            },
-                            {
                                 display_name: "Pickup Location",
                                 variable_name: "location",
                                 value: orderDetails.location
+                            },
+
+                            {
+                                display_name: "Items",
+                                variable_name: "itemDetails",
+                                value: orderDetails.cart
                             }
                         ]
                     },

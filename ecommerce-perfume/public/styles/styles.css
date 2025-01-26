@@ -763,3 +763,215 @@ footer {
         height: 200px;
     }
 }
+
+/* Team Section */
+#team {
+    text-align: center;
+    margin: 40px 0;
+}
+
+#team h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+.team-member {
+    display: inline-block;
+    margin: 20px;
+    text-align: center;
+}
+
+.team-member img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.team-member h3 {
+    font-size: 1.2em;
+    margin-bottom: 5px;
+}
+
+.team-member p {
+    font-size: 1em;
+    color: #666; /* Dark Gray */
+}
+
+/* Timeline Section */
+#timeline {
+    margin: 40px 0;
+}
+
+#timeline h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#timeline ul {
+    list-style: none;
+    padding: 0;
+}
+
+#timeline ul li {
+    margin: 10px 0;
+    font-size: 1.1em;
+}
+
+/* Testimonials Section */
+#testimonials {
+    margin: 40px 0;
+    text-align: center;
+}
+
+#testimonials h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+blockquote {
+    font-size: 1.2em;
+    margin: 20px auto;
+    max-width: 600px;
+    color: #666; /* Dark Gray */
+    position: relative;
+}
+
+blockquote::before {
+    content: open-quote;
+    font-size: 4em;
+    position: absolute;
+    left: -10px;
+    top: -10px;
+    color: #FFC0CB; /* Soft Pink */
+}
+
+blockquote footer {
+    margin-top: 10px;
+    font-size: 0.9em;
+    color: #333; /* Dark Gray */
+}
+
+/* Contact Information Section */
+#contact-info {
+    margin: 40px 0;
+    text-align: center;
+}
+
+#contact-info h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+#contact-info p {
+    font-size: 1.1em;
+    margin: 10px 0;
+}
+
+#contact-info a {
+    color: #333; /* Dark Gray */
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+#contact-info a:hover {
+    color: #FFD700; /* Gold */
+}
+
+/* Social Media Links Section */
+#social-media {
+    margin: 40px 0;
+    text-align: center;
+}
+
+#social-media h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+#social-media ul {
+    list-style: none;
+    padding: 0;
+}
+
+#social-media ul li {
+    display: inline-block;
+    margin: 0 10px;
+}
+
+#social-media ul li a {
+    color: #333; /* Dark Gray text */
+    text-decoration: none;
+    font-size: 1.2em;
+    transition: color 0.3s ease;
+}
+
+#social-media ul li a:hover {
+    color: #FFD700; /* Gold */
+}
+
+/* FAQ Section */
+#faq {
+    margin: 40px 0;
+}
+
+#faq h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.faq-item {
+    margin-bottom: 15px;
+}
+
+.faq-item h3 {
+    font-size: 1.2em;
+    margin-bottom: 5px;
+}
+
+.faq-item p {
+    margin: 0;
+    color: #666; /* Dark Gray */
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .team-member {
+        display: block;
+        margin: 20px auto;
+    }
+
+    blockquote {
+        font-size: 1em;
+    }
+
+    #contact-info p {
+        font-size: 1em;
+    }
+
+    #social-media ul li {
+        display: block;
+        margin: 10px 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .team-member img {
+        width: 100px;
+        height: 100px;
+    }
+
+    blockquote {
+        font-size: 0.9em;
+    }
+
+    #contact-info p {
+        font-size: 0.9em;
+    }
+
+    #social-media ul li a {
+        font-size: 1em;
+    }
+}
