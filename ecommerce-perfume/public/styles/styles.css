@@ -980,3 +980,18 @@ blockquote footer {
         font-size: 1em;
     }
 }
+
+@media (max-width: 768px) {
+    .cart-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .cart-item img {
+        margin-bottom: 10px;
+    }
+
+    .cart-item h3, .cart-item p, .cart-item button {
+        margin: 5px 0;
+    }
+}
