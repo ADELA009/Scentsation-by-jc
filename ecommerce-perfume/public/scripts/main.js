@@ -68,10 +68,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert(`Only ${data.availableQuantity} items available for ${productName}.`);
             }
         })
-        .catch(error => {
+        /*.catch(error => {
             console.error('Error checking product availability:', error);
             alert('Failed to add product to cart. Please try again.');
-        });
+        });*/
     }
 });
 
