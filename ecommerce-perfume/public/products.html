@@ -51,77 +51,114 @@
     <main>
         <!-- Search Section -->
         <section id="search">
-            <input type="text" id="search-input" placeholder="Search for products by name...">
-            <button id="search-button">Search</button>
+            <h2>Search Products</h2>
+            <input type="text" id="search-input" placeholder="Search for perfumes...">
         </section>
 
-        <!-- Product Showcase Section -->
-        <section id="product-showcase">
-            <h2>Featured Products</h2>
-            <div class="product-list">
-                <div class="product-item" data-quantity="10">
-                    <img src="images/9pm.jfif" alt="Perfume 1">
-                    <h3>9 Pm</h3>
-                    <p>Description of Perfume 1.</p>
-                    <span>₦57,000</span>
-                    <p>Available: <span class="available-quantity">10</span></p>
-                    <label for="quantity">Quantity:</label>
-                    <input type="number" id="quantity" name="quantity" min="1" max="10" value="1">
-                    <button>Add to Cart</button>
-                </div>
-                <div class="product-item" data-quantity="5">
-                    <img src="images/channel.jfif" alt="Perfume 2">
-                    <h3>Channel</h3>
-                    <p>Description of Perfume 2.</p>
-                    <span>₦45,000</span>
-                    <p>Available: <span class="available-quantity">5</span></p>
-                    <label for="quantity">Quantity:</label>
-                    <input type="number" id="quantity" name="quantity" min="1" max="5" value="1">
-                    <button>Add to Cart</button>
-                </div>
-                <div class="product-item" data-quantity="12">
-                    <img src="images/dolce.jfif" alt="Perfume 3">
-                    <h3>Dolce and Gabbana</h3>
-                    <p>Description of Perfume 3.</p>
-                    <span>₦50,000</span>
-                    <p>Available: <span class="available-quantity">12</span></p>
-                    <label for="quantity">Quantity:</label>
-                    <input type="number" id="quantity" name="quantity" min="1" max="12" value="1">
-                    <button>Add to Cart</button>
-                </div>
-                <div class="product-item" data-quantity="7">
-                    <img src="images/dior.jfif" alt="Perfume 4">
-                    <h3>Dior</h3>
-                    <p>Description of Perfume 4.</p>
-                    <span>₦55,500</span>
-                    <p>Available: <span class="available-quantity">7</span></p>
-                    <label for="quantity">Quantity:</label>
-                    <input type="number" id="quantity" name="quantity" min="1" max="7" value="1">
-                    <button>Add to Cart</button>
-                </div>
-                <div class="product-item" data-quantity="6">
-                    <img src="images/armani.jfif" alt="Perfume 5">
-                    <h3>Armani</h3>
-                    <p>Description of Perfume 5.</p>
-                    <span>₦25,000</span>
-                    <p>Available: <span class="available-quantity">6</span></p>
-                    <label for="quantity">Quantity:</label>
-                    <input type="number" id="quantity" name="quantity" min="1" max="6" value="1">
-                    <button>Add to Cart</button>
-                </div>
-                <div class="product-item" data-quantity="8">
-                    <img src="images/vanilla.jfif" alt="Perfume 6">
-                    <h3>Vanilla Crush</h3>
-                    <p>Description of Perfume 3.</p>
-                    <span>65,000</span>
-                    <p>Available: <span class="available-quantity">8</span></p>
-                    <label for="quantity">Quantity:</label>
-                    <input type="number" id="quantity" name="quantity" min="1" max="8" value="1">
-                    <button>Add to Cart</button>
-                </div>
-                <!-- Add more products here -->
+        <!-- Product List Section -->
+        <section id="product-list">
+            <h2>Our Products</h2>
+            <div class="product-item" data-quantity="10" data-name="9Pm">
+                <img src="images/9pm.jfif" alt="Perfume 1">
+                <h3>9Pm</h3>
+                <p>Description of Perfume 1.</p>
+                <span>₦37,500</span>
+                <p class="available">Available: 10</p>
+                <label for="quantity">Quantity:</label>
+                <input type="number" name="quantity" min="1" max="10" value="1">
+                <button>Add to Cart</button>
             </div>
-            <p id="search-message"></p>
+            <div class="product-item" data-quantity="5" data-name="Armani">
+                <img src="images/armani.jfif" alt="Perfume 2">
+                <h3>Armani</h3>
+                <p>Description of Perfume 2.</p>
+                <span>₦45,000</span>
+                <p class="available">Available: 5</p>
+                <label for="quantity">Quantity:</label>
+                <input type="number" name="quantity" min="1" max="5" value="1">
+                <button>Add to Cart</button>
+            </div>
+            <div class="product-item" data-quantity="8" data-name="Perfume 3">
+                <img src="images/tom.jfif" alt="Perfume 3">
+                <h3>Tom Ford</h3>
+                <p>Description of Perfume 3.</p>
+                <span>₦52,500</span>
+                <p class="available">Available: 8</p>
+                <label for="quantity">Quantity:</label>
+                <input type="number" name="quantity" min="1" max="8" value="1">
+                <button>Add to Cart</button>
+            </div>
+            <!-- Add 10 more products here -->
+            <div class="product-item" data-quantity="7" data-name="Perfume 4">
+                <img src="images/berry.jfif" alt="Perfume 4">
+                <h3>Perfume 4</h3>
+                <p>Description of Perfume 4.</p>
+                <span>₦40,000</span>
+                <p class="available">Available: 7</p>
+                <label for="quantity">Quantity:</label>
+                <input type="number" name="quantity" min="1" max="7" value="1">
+                <button>Add to Cart</button>
+            </div>
+            <div class="product-item" data-quantity="6" data-name="Perfume 5">
+                <img src="images/givenchy.jfif" alt="Perfume 5">
+                <h3>Givency</h3>
+                <p>Description of Perfume 5.</p>
+                <span>₦42,000</span>
+                <p class="available">Available: 6</p>
+                <label for="quantity">Quantity:</label>
+                <input type="number" name="quantity" min="1" max="6" value="1">
+                <button>Add to Cart</button>
+            </div>
+            <div class="product-item" data-quantity="9" data-name="Perfume 6">
+                <img src="images/nivea.jfif" alt="Perfume 6">
+                <h3>Nivea</h3>
+                <p>Description of Perfume 6.</p>
+                <span>₦38,000</span>
+                <p class="available">Available: 9</p>
+                <label for="quantity">Quantity:</label>
+                <input type="number" name="quantity" min="1" max="9" value="1">
+                <button>Add to Cart</button>
+            </div>
+            <div class="product-item" data-quantity="4" data-name="Dior">
+                <img src="images/dior.jfif" alt="Perfume 7">
+                <h3>Dior</h3>
+                <p>Description of Perfume 7.</p>
+                <span>₦50,000</span>
+                <p class="available">Available: 4</p>
+                <label for="quantity">Quantity:</label>
+                <input type="number" name="quantity" min="1" max="4" value="1">
+                <button>Add to Cart</button>
+            </div>
+            <div class="product-item" data-quantity="3" data-name="Channel">
+                <img src="images/channel.jfif" alt="Perfume 8">
+                <h3>Channel</h3>
+                <p>Description of Perfume 8.</p>
+                <span>₦55,000</span>
+                <p class="available">Available: 3</p>
+                <label for="quantity">Quantity:</label>
+                <input type="number" name="quantity" min="1" max="3" value="1">
+                <button>Add to Cart</button>
+            </div>
+            <div class="product-item" data-quantity="12" data-name="Calvin">
+                <img src="images/calvin.jfif" alt="Perfume 9">
+                <h3>Calvin</h3>
+                <p>Description of Perfume 9.</p>
+                <span>₦35,000</span>
+                <p class="available">Available: 12</p>
+                <label for="quantity">Quantity:</label>
+                <input type="number" name="quantity" min="1" max="12" value="1">
+                <button>Add to Cart</button>
+            </div>
+            <div class="product-item" data-quantity="11" data-name="Vanilla Crush">
+                <img src="images/vanilla.jfif" alt="Perfume 10">
+                <h3>Vanilla Crush</h3>
+                <p>Description of Perfume 10.</p>
+                <span>₦36,000</span>
+                <p class="available">Available: 11</p>
+                <label for="quantity">Quantity:</label>
+                <input type="number" name="quantity" min="1" max="11" value="1">
+                <button>Add to Cart</button>
+            </div>
         </section>
     </main>
     
@@ -131,21 +168,19 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const cart = JSON.parse(localStorage.getItem('cart')) || [];
             const searchInput = document.getElementById('search-input');
-            const searchButton = document.getElementById('search-button');
-            const productList = document.querySelector('.product-list');
+            const productList = document.getElementById('product-list');
             const searchMessage = document.getElementById('search-message');
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-            searchButton.addEventListener('click', () => {
-                const query = searchInput.value.toLowerCase();
-                const products = document.querySelectorAll('.product-item');
+            searchInput.addEventListener('input', () => {
+                const searchTerm = searchInput.value.toLowerCase();
+                const products = productList.querySelectorAll('.product-item');
                 let found = false;
 
                 products.forEach(product => {
                     const productName = product.querySelector('h3').textContent.toLowerCase();
-
-                    if (productName.includes(query)) {
+                    if (productName.includes(searchTerm)) {
                         product.style.display = 'block';
                         found = true;
                     } else {
@@ -154,7 +189,6 @@
                 });
 
                 if (!found) {
-                    searchMessage.textContent = `${query} is not available.`;
                     searchMessage.style.display = 'block';
                 } else {
                     searchMessage.style.display = 'none';
@@ -192,9 +226,44 @@
                     cart.push(product);
                 }
 
+                productItem.setAttribute('data-quantity', availableQuantity - productQuantity);
+                productItem.querySelector('input[name="quantity"]').max = availableQuantity - productQuantity;
+
                 localStorage.setItem('cart', JSON.stringify(cart));
-                alert(`${productQuantity} ${productName}(s) have been added to your cart.`);
+                alert(`${productQuantity} ${productName}(s) added to cart.`);
             }
+
+            // Function to update product availability
+            function updateProductAvailability() {
+                const products = document.querySelectorAll('.product-item');
+                products.forEach(product => {
+                    const productName = product.getAttribute('data-name');
+                    fetch('/api/check-availability', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ productName })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.availableQuantity !== undefined) {
+                            product.setAttribute('data-quantity', data.availableQuantity);
+                            product.querySelector('.available').textContent = `Available: ${data.availableQuantity}`;
+                            product.querySelector('input[name="quantity"]').max = data.availableQuantity;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error checking product availability:', error);
+                    });
+                });
+            }
+
+            // Check product availability every 30 seconds
+            setInterval(updateProductAvailability, 3000);
+
+            // Initial check on page load
+            updateProductAvailability();
         });
     </script>
 </body>

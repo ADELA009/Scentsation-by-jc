@@ -3,14 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - Scentsation by JC</title>
+    <title>Scentsation by JC</title>
     <link rel="stylesheet" href="styles/styles.css">
     <script src="scripts/main.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <meta name="description" content="Discover the finest perfumes and fragrances at Scentsation by JC. Shop now for exclusive deals and offers.">
     <meta name="keywords" content="perfume, fragrance, scents, shop, buy perfume, Scentsation by JC">
     <meta name="author" content="Scentsation by JC">
-    <!-- Font Awesome CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Scentsation by JC",
+        "url": "http://www.scentsationbyjc.com",
+        "description": "Discover the finest perfumes and fragrances at Scentsation by JC. Shop now for exclusive deals and offers.",
+        "publisher": {
+            "@type": "Organization",
+            "name": "Scentsation by JC",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "http://www.scentsationbyjc.com/images/logo.png"
+            }
+        }
+    }
+    </script>
 </head>
 <body>
     <header>
@@ -36,7 +53,7 @@
         <section id="hero">
             <div class="hero-content">
                 <h1>Welcome to Scentsation by JC</h1>
-                <p>Discover the finest perfumes and fragrances</p>
+                <p>Discover the finest perfumes and fragrances. Shop now for exclusive deals and offers.</p>
                 <a href="products.html" class="btn">Shop Now</a>
             </div>
         </section>
@@ -104,5 +121,49 @@
     <footer>
         <p>&copy; 2025 Scentsation by JC. All rights reserved.</p>
     </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const addToCartButtons = document.querySelectorAll('.product-item button');
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+            addToCartButtons.forEach(button => {
+                button.addEventListener('click', addToCart);
+            });
+
+            function addToCart(event) {
+                const productItem = event.target.closest('.product-item');
+                const productName = productItem.querySelector('h3').textContent;
+                const productPrice = productItem.querySelector('span').textContent.replace('₦', '').replace(',', '');
+                const productImage = productItem.querySelector('img').src;
+                const productQuantity = parseInt(productItem.querySelector('input[name="quantity"]').value);
+                const availableQuantity = parseInt(productItem.getAttribute('data-quantity'));
+
+                if (productQuantity > availableQuantity) {
+                    alert(`Only ${availableQuantity} items available for ${productName}.`);
+                    return;
+                }
+
+                const existingProductIndex = cart.findIndex(item => item.name === productName);
+                if (existingProductIndex !== -1) {
+                    cart[existingProductIndex].quantity += productQuantity;
+                } else {
+                    const product = {
+                        name: productName,
+                        price: parseFloat(productPrice),
+                        image: productImage,
+                        quantity: productQuantity
+                    };
+                    cart.push(product);
+                }
+
+                productItem.setAttribute('data-quantity', availableQuantity - productQuantity);
+                productItem.querySelector('input[name="quantity"]').max = availableQuantity - productQuantity;
+
+                localStorage.setItem('cart', JSON.stringify(cart));
+                alert(`${productQuantity} ${productName}(s) added to cart.`);
+            }
+        });
+    </script>
 </body>
 </html>

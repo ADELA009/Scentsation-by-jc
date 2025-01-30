@@ -3,7 +3,7 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #FFF0F5; /* Light Pink background */
+    background-color: #f9f9f9;
 }
 
 header {
@@ -224,20 +224,19 @@ footer {
 }
 
 /* Product List */
-.product-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
+#product-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
 }
 
 .product-item {
     background-color: #FFFFFF; /* White background */
     border: 1px solid #DDD;
     border-radius: 10px;
-    margin: 10px;
-    padding: 20px;
+    padding: 10px;
     text-align: center;
-    width: 30%;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -259,16 +258,17 @@ footer {
 }
 
 .product-item h3 {
-    font-size: 1.5em;
+    font-size: 1.2em;
     margin: 10px 0;
 }
 
 .product-item p {
     color: #666; /* Dark Gray */
+    font-size: 0.9em;
 }
 
 .product-item span {
-    font-size: 1.2em;
+    font-size: 1em;
     color: #333; /* Dark Gray */
 }
 
@@ -279,7 +279,7 @@ footer {
 }
 
 .product-item input[type="number"] {
-    width: 60px;
+    width: 50px;
     padding: 5px;
     font-size: 1em;
     border: 1px solid #DDD;
@@ -288,7 +288,7 @@ footer {
 }
 
 .product-item button {
-    padding: 10px;
+    padding: 8px;
     background-color: #FFC0CB; /* Soft Pink */
     color: #333; /* Dark Gray text */
     border: none;
@@ -299,6 +299,12 @@ footer {
 
 .product-item button:hover {
     background-color: #FFB6C1; /* Light Pink */
+}
+
+@media (min-width: 1024px) {
+    #product-list {
+        grid-template-columns: repeat(4, 1fr);
+    }
 }
 
 /* Testimonials */
@@ -539,6 +545,11 @@ footer {
     margin-top: 20px;
 }
 
+#checkout-button a {
+    color: inherit;
+    text-decoration: none;
+}
+
 #checkout-button:hover {
     background-color: #FFB6C1; /* Light Pink */
 }
@@ -551,49 +562,47 @@ footer {
 
 /* Checkout Section */
 #checkout {
-    padding: 20px;
-    text-align: center;
-}
-
-#checkout h2 {
-    font-size: 2em;
-    margin-bottom: 20px;
-}
-
-#checkout-form {
     max-width: 600px;
-    margin: 0 auto;
-    background-color: #FFF;
+    margin: 20px auto;
     padding: 20px;
+    background-color: #fff;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-#checkout-form div {
-    margin-bottom: 15px;
-    text-align: left;
+#checkout h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#checkout-form {
+    display: flex;
+    flex-direction: column;
 }
 
 #checkout-form label {
-    display: block;
     margin-bottom: 5px;
     font-weight: bold;
 }
 
-#checkout-form input[type="text"],
-#checkout-form input[type="email"],
+#checkout-form input,
 #checkout-form select {
-    width: 100%;
+    margin-bottom: 15px;
     padding: 10px;
-    border: 1px solid #DDD;
+    border: 1px solid #ddd;
     border-radius: 5px;
-    box-sizing: border-box;
+    font-size: 1em;
+}
+
+#checkout-form p {
+    font-size: 1em;
+    margin-bottom: 15px;
 }
 
 #checkout-form button {
-    padding: 10px 20px;
-    background-color: #FFD700; /* Gold */
-    color: #333;
+    padding: 10px;
+    background-color: #FFC0CB; /* Soft Pink */
+    color: #333; /* Dark Gray text */
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -601,8 +610,24 @@ footer {
 }
 
 #checkout-form button:hover {
-    background-color: #FFC107; /* Darker Gold */
-    color: #FFF;
+    background-color: #FFB6C1; /* Light Pink */
+}
+
+@media (max-width: 768px) {
+    #checkout {
+        margin: 10px;
+        padding: 15px;
+    }
+
+    #checkout-form input,
+    #checkout-form select {
+        font-size: 0.9em;
+    }
+
+    #checkout-form button {
+        padding: 8px;
+        font-size: 0.9em;
+    }
 }
 
 /* Contact Form Styles */
