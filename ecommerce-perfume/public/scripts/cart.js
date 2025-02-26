@@ -6,9 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
         menuToggle.classList.toggle('active');
         nav.classList.toggle('active');
     });
-});
 
-document.addEventListener('DOMContentLoaded', () => {
     const checkoutForm = document.getElementById('checkout-form');
 
     checkoutForm.addEventListener('submit', (event) => {
@@ -24,17 +22,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const amount = calculateOrderAmount(orderDetails.cart);
 
-        payWithPaystack(orderDetails, amount);
+        // Fetch Paystack public key from the server
+        fetch('/api/paystack-key')
+            .then(response => response.json())
+            .then(data => {
+                payWithPaystack(orderDetails, amount, data.key);
+            })
+            .catch(error => {
+                console.error('Error fetching Paystack key:', error);
+            });
     });
 
     function calculateOrderAmount(cart) {
         // Calculate the total order amount based on the cart items
-        return cart.reduce((total, item) => total + parseFloat(item.price.replace('$', '')) * 100, 0);
+        return cart.reduce((total, item) => total + parseFloat(item.price) * item.quantity * 100, 0);
     }
 
-    function payWithPaystack(orderDetails, amount) {
+    function payWithPaystack(orderDetails, amount, publicKey) {
         const handler = PaystackPop.setup({
-            key: 'pk_test_68dbfa8350773116088d7bcf0eaee6edeb589f03', // Replace with your Paystack public key
+            key: publicKey, // Use the fetched Paystack public key
             email: orderDetails.email,
             amount: amount,
             currency: 'NGN',

@@ -1,11 +1,12 @@
+require('dotenv').config();
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
 const axios = require('axios');
-require('dotenv').config(); // Ensure you have a .env file with your Paystack secret key
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 // Middleware
 app.use(bodyParser.json());
@@ -13,6 +14,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Serve static files
 app.use(express.static('public'));
+
+// Endpoint to get Paystack public key
+app.get('/api/paystack-key', (req, res) => {
+    res.json({ key: process.env.PAYSTACK_PUBLIC_KEY });
+});
 
 // Email endpoint
 app.post('/api/send-email', (req, res) => {
@@ -43,6 +49,13 @@ app.post('/api/send-email', (req, res) => {
     });
 });
 
+// Contact endpoint
+app.post('/api/contact', (req, res) => {
+    const { name, email, message } = req.body;
+    console.log(`Received message from ${name} (${email}): ${message}`);
+    res.json({ success: true, message: 'Message sent successfully!' });
+});
+
 // Payment endpoint
 app.post('/api/place-order', async (req, res) => {
     const { name, email, cart, deliveryFee, totalPrice } = req.body;
@@ -60,7 +73,7 @@ app.post('/api/place-order', async (req, res) => {
             }
         }, {
             headers: {
-                Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}` // Use environment variables for sensitive data
+                Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`
             }
         });
 
@@ -76,7 +89,6 @@ app.post('/api/place-order', async (req, res) => {
 });
 
 // Start the server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
 });

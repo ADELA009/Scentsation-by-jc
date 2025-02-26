@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us - Scentsation by JC</title>
     <link rel="stylesheet" href="styles/styles.css">
-    <script src="scripts/contact.js" defer></script>
     <script src="scripts/main.js" defer></script>
     <meta name="description" content="Get in touch with Scentsation by JC. Contact us for inquiries, support, or feedback.">
     <meta name="keywords" content="contact, Scentsation by JC, inquiries, support, feedback, perfumes, fragrances">
@@ -37,11 +36,11 @@
         <nav>
             <div class="logo">Scentsation by JC</div>
             <ul class="nav-links">
-                <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
-                <li><a href="products.html"><i class="fas fa-box-open"></i> Products</a></li>
-                <li><a href="cart.html"><i class="fas fa-shopping-cart"></i> Shopping Cart</a></li>
-                <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
-                <li><a href="contact.html" class="active"><i class="fas fa-envelope"></i> Contact</a></li>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="cart.html">Shopping Cart</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
             </ul>
             <div class="menu-toggle" id="mobile-menu">
                 <span></span>
@@ -53,20 +52,17 @@
     
     <main>
         <section id="contact">
-            <h2>Contact Us</h2>
-            <form id="contact-form">
-                <div>
-                    <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" required>
-                </div>
-                <div>
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                <div>
-                    <label for="message">Message:</label>
-                    <textarea id="message" name="message" rows="5" required></textarea>
-                </div>
+            <h1>Contact Us</h1>
+            <form action="contact.php" method="POST" id="contact-form">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+                
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" required></textarea>
+                
                 <button type="submit">Send Message</button>
             </form>
         </section>
@@ -97,34 +93,5 @@
     <footer>
         <p>&copy; 2025 Scentsation by JC. All rights reserved.</p>
     </footer>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const contactForm = document.getElementById('contact-form');
-            contactForm.addEventListener('submit', (event) => {
-                event.preventDefault();
-                const formData = new FormData(contactForm);
-                const name = formData.get('name');
-                const email = formData.get('email');
-                const message = formData.get('message');
-
-                fetch('/api/contact', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ name, email, message })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    alert('Message sent successfully!');
-                    contactForm.reset();
-                })
-                .catch(error => {
-                    alert('Failed to send message. Please try again.');
-                });
-            });
-        });
-    </script>
 </body>
 </html>

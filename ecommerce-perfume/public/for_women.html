@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Women - Scentsation by JC</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="styles/categories.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Scentsation by JC</div>
+            <ul class="nav-links">
+                <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="products.html"><i class="fas fa-box-open"></i> Products</a></li>
+                <li><a href="cart.html"><i class="fas fa-shopping-cart"></i> Cart</a></li>
+                <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
+                <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="product-list">
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Search women's perfumes...">
+                <button>Search</button>
+            </div>
+            <h2>Women's Fragrances</h2>
+            <div class="product-grid">
+                <!-- Product items will be added here -->
+                <div class="product-item" data-name="Elegant Rose">
+                    <img src="images/womens_1.jpg" alt="Elegant Rose">
+                    <h3>Elegant Rose</h3>
+                    <p>A delicate blend of rose and jasmine.</p>
+                    <span>₦10,000</span>
+                    <div class="quantity">
+                        <label for="qty1">Quantity:</label>
+                        <input type="number" id="qty1" min="1" value="1">
+                    </div>
+                    <button onclick="addToCart('Elegant Rose', 10000, 'qty1')">Add to Cart</button>
+                </div>
+
+                <div class="product-item" data-name="Mystic Garden">
+                    <img src="images/womens_2.jpg" alt="Mystic Garden">
+                    <h3>Mystic Garden</h3>
+                    <p>A captivating scent with hints of lavender and vanilla.</p>
+                    <span>₦12,000</span>
+                    <div class="quantity">
+                        <label for="qty2">Quantity:</label>
+                        <input type="number" id="qty2" min="1" value="1">
+                    </div>
+                    <button onclick="addToCart('Mystic Garden', 12000, 'qty2')">Add to Cart</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <aside class="sidebar">
+        <h3>Categories</h3>
+        <ul>
+            <li><a href="for_men.html">For Men</a></li>
+            <li><a href="for_women.html" class="active">For Women</a></li>
+            <li><a href="below_10k.html">10k Below</a></li>
+            <li><a href="above_10k.html">10k Above</a></li>
+            <li><a href="deodorants.html">Deodorants</a></li>
+            <li><a href="body_mist.html">Body Mist</a></li>
+            <li><a href="perfume_oil.html">Perfume Oil</a></li>
+            <li><a href="perfumes.html">Perfumes</a></li>
+        </ul>
+    </aside>
+
+    <div class="menu-toggle" id="sidebar-toggle">
+        <i class="fas fa-bars"></i> Menu
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Scentsation by JC. All rights reserved.</p>
+    </footer>
+
+    <script src="scripts/categories.js" defer></script>
+</body>
+</html>

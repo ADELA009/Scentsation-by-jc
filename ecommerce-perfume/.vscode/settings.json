@@ -1,0 +1,26 @@
+{
+    "files.autoSave": "afterDelay",
+    "editor.unicodeHighlight.nonBasicASCII": false,
+    "git.autofetch": true,
+    "git.enableSmartCommit": true,
+    "chat.editing.alwaysSaveWithGeneratedChanges": true,
+    "php.validate.executablePath": "C:\\xampp\\php\\php.exe", // Update this path to your PHP executable
+    "php.suggest.basic": false,
+    "php.executablePath": "C:\\xampp\\php\\php.exe", // Update this path to your PHP executable
+    "blade.format.enable": true,
+    "blade.format.wrapLineLength": 120,
+    "blade.format.wrapAttributes": "auto",
+    "tailwindCSS.includeLanguages": {
+        "plaintext": "html",
+        "html": "html",
+        "php": "html"
+    },
+    "tailwindCSS.emmetCompletions": true,
+    "emmet.includeLanguages": {
+        "blade": "html"
+    },
+    "fiveServer.php.ini": "C:\\xampp\\php\\php.ini",
+    "fiveServer.php.executablePath": "C:\\xampp\\php\\php.exe", // Update this path to your PHP executable
+    "fiveServer.php.validate.enable": true,
+    "workbench.settings.useSplitJSON": true
+}

@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
         totalPriceElement.textContent = totalPrice.toLocaleString();
     }
 
-    placeOrderButton.addEventListener('click', (event) => {
+    checkoutForm.addEventListener('submit', (event) => {
         event.preventDefault();
 
         const formData = new FormData(checkoutForm);
@@ -82,13 +82,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         console.log('Order Details:', orderDetails); // Log order details for debugging
 
-        // Redirect to Paystack payment page
-        payWithPaystack(orderDetails);
+        // Use a hardcoded Paystack public key
+        const publicKey = 'pk_test_68dbfa8350773116088d7bcf0eaee6edeb589f03';
+        payWithPaystack(orderDetails, publicKey);
     });
 
-    function payWithPaystack(orderDetails) {
+    function payWithPaystack(orderDetails, publicKey) {
         const handler = PaystackPop.setup({
-            key: 'pk_test_68dbfa8350773116088d7bcf0eaee6edeb589f03', // Replace with your Paystack public key
+            key: publicKey, // Use the hardcoded Paystack public key
             email: orderDetails.email,
             amount: orderDetails.totalPrice * 100, // Paystack amount is in kobo
             currency: 'NGN',
