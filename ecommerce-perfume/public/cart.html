@@ -6,8 +6,7 @@
     <title>Shopping Cart - Scentsation by JC</title>
     <link rel="stylesheet" href="styles/styles.css">
     <script src="scripts/cart.js" defer></script>
-    <script src="scripts/main.js"></script>
-    <script src="scripts/products.js" defer></script>
+    <script src="scripts/main.js" defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <meta name="description" content="View and manage your shopping cart at Scentsation by JC. Secure and easy checkout process.">
     <meta name="keywords" content="shopping cart, Scentsation by JC, perfumes, fragrances, secure checkout">
@@ -69,54 +68,5 @@
     <footer>
         <p>&copy; 2025 Scentsation by JC. All rights reserved.</p>
     </footer>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const cartList = document.getElementById('cart-list');
-            const emptyCartMessage = document.getElementById('empty-cart-message');
-            const totalPriceElement = document.getElementById('total-price');
-            const checkoutButton = document.getElementById('checkout-button');
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-            function renderCart() {
-                cartList.innerHTML = '';
-                if (cart.length === 0) {
-                    emptyCartMessage.style.display = 'block';
-                    checkoutButton.style.display = 'none';
-                    totalPriceElement.textContent = '₦0.00';
-                } else {
-                    emptyCartMessage.style.display = 'none';
-                    checkoutButton.style.display = 'block';
-                    let totalPrice = 0;
-                    cart.forEach((product, index) => {
-                        const cartItem = document.createElement('div');
-                        cartItem.classList.add('cart-item');
-                        cartItem.innerHTML = `
-                            <img src="${product.image}" alt="${product.name}">
-                            <h3>${product.name}</h3>
-                            <p>Price: ₦${product.price.toLocaleString()}</p>
-                            <p>Quantity: ${product.quantity}</p>
-                            <p>Total: ₦${(product.price * product.quantity).toLocaleString()}</p>
-                            <button class="remove-button" data-index="${index}">Remove</button>
-                        `;
-                        cartList.appendChild(cartItem);
-                        totalPrice += product.price * product.quantity;
-                    });
-                    totalPriceElement.textContent = `₦${totalPrice.toLocaleString()}`;
-                }
-            }
-
-            cartList.addEventListener('click', (event) => {
-                if (event.target.classList.contains('remove-button')) {
-                    const index = event.target.dataset.index;
-                    cart.splice(index, 1);
-                    localStorage.setItem('cart', JSON.stringify(cart));
-                    renderCart();
-                }
-            });
-
-            renderCart();
-        });
-    </script>
 </body>
 </html>

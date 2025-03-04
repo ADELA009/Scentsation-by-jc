@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('search-input');
     const productList = document.getElementById('product-list');
     const searchMessage = document.getElementById('search-message');
-    const productGrid = document.getElementsByClassName('product-grid');
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
     const sidebarToggle = document.getElementById('sidebar-toggle');
@@ -34,17 +33,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
         products.forEach(product => {
             const productName = product.querySelector('h3').textContent.toLowerCase();
-            const productprice = product.querySelector('span').textContent;
-            if (productName.includes(searchTerm) || productprice.includes(searchTerm)) {
-                product.style.display = 'flex';
+            if (productName.includes(searchTerm)) {
+                product.style.display = 'block';
                 found = true;
             } else {
-                    product.style.display = 'none';
+                product.style.display = 'none';
             }
         });
 
-        if(!found) {
-            searchMessage.innerHTML = `${searchTerm} is not available`
+        if (!found) {
+            searchMessage.textContent = `${searchTerm} is not available`;
+        } else {
+            searchMessage.textContent = '';
         }
     });
 
@@ -55,38 +55,45 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function addToCart(event) {
         const productItem = event.target.closest('.product-item');
-        const productName = productItem.querySelector('h3').textContent;
-        const productPrice = productItem.querySelector('span').textContent.replace('₦', '').replace(',', '');
+        const productName = productItem.dataset.name;
+        const productPrice = parseFloat(productItem.querySelector('span').textContent.replace('₦', '').replace(',', ''));
         const productImage = productItem.querySelector('img').src;
-        const productQuantity = parseInt(productItem.querySelector('input[name="quantity"]').value);
-        const availableQuantity = parseInt(productItem.getAttribute('data-quantity'));
+        const availableQuantity = parseInt(productItem.dataset.quantity);
+        const quantityInput = productItem.querySelector('input[name="quantity"]');
+        let productQuantity = parseInt(quantityInput.value);
 
-        if (productQuantity > availableQuantity) {
-            alert(`Only ${availableQuantity} items available for ${productName}.`);
+        if (isNaN(productQuantity) || productQuantity <= 0) {
+            alert('Please enter a valid quantity.');
             return;
         }
 
-        const existingProductIndex = cart.findIndex(item => item.name === productName);
+        if (productQuantity > availableQuantity) {
+            alert(`Only ${availableQuantity} items of ${productName} are available.`);
+            return;
+        }
+
+        let existingProductIndex = cart.findIndex(item => item.name === productName);
+
         if (existingProductIndex !== -1) {
             cart[existingProductIndex].quantity += productQuantity;
         } else {
-            const product = {
+            let product = {
                 name: productName,
-                price: parseFloat(productPrice),
+                price: productPrice,
                 image: productImage,
                 quantity: productQuantity
             };
             cart.push(product);
         }
 
-        // Update available quantity on the product item
-        const newAvailableQuantity = availableQuantity - productQuantity;
-        productItem.setAttribute('data-quantity', newAvailableQuantity);
-        productItem.querySelector('.available').textContent = `Available: ${newAvailableQuantity}`;
-        productItem.querySelector('input[name="quantity"]').max = newAvailableQuantity;
-
         localStorage.setItem('cart', JSON.stringify(cart));
-        updateCartCount(); // Update the cart count after adding to cart
+        updateCartCount();
         alert(`${productQuantity} ${productName}(s) added to cart.`);
+
+        // Update available quantity and reset input
+        let newAvailableQuantity = availableQuantity - productQuantity;
+        productItem.dataset.quantity = newAvailableQuantity;
+        productItem.querySelector('.available').textContent = `Available: ${newAvailableQuantity}`;
+        quantityInput.value = 1;
     }
 });

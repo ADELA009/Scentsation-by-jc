@@ -1,26 +1,27 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $name = htmlspecialchars(trim($_POST["name"]));
-    $email = htmlspecialchars(trim($_POST["email"]));
-    $message = htmlspecialchars(trim($_POST["message"]));
+    $name = $_POST["name"];
+    $email = $_POST["email"];
+    $message = $_POST["message"];
 
-    // Debugging statements
-    error_log("Form submitted: Name = $name, Email = $email, Message = $message");
+    // Replace with your email address
+    $to = "adeyekunadelola2009@gmail.com";  // Replace with your actual email
 
-    $to = "adeyekunadelola2009@gmail.com"; // Replace with your email address
-    $subject = "New Contact Form Submission from $name";
-    $body = "Name: $name\nEmail: $email\n\nMessage:\n$message";
-    $headers = "From: $email";
+    $subject = "Contact Form Submission from Scentsation by JC";
+    $body = "Name: " . $name . "\r\n" .
+            "Email: " . $email . "\r\n" .
+            "Message:\r\n" . $message;
+
+    $headers = "From: " . $email . "\r\n" .
+               "Reply-To: " . $email . "\r\n" .
+               "X-Mailer: PHP/" . phpversion();
 
     if (mail($to, $subject, $body, $headers)) {
-        error_log("Mail sent successfully to $to");
-        echo "<script>alert('Message sent successfully!'); window.location.href = 'contact.html';</script>";
+        echo "Thank you for your message! We will get back to you soon.";
     } else {
-        error_log("Failed to send mail to $to");
-        echo "<script>alert('Failed to send message. Please try again.'); window.location.href = 'contact.html';</script>";
+        echo "Oops! Something went wrong and we couldn't send your message.";
     }
 } else {
-    header("Location: contact.html");
-    exit();
+    echo "There was a problem with your submission, please try again.";
 }
 ?>

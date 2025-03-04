@@ -91,16 +91,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const sidebarToggle = document.getElementById('sidebar-toggle');
     const sidebar = document.querySelector('.sidebar');
 
-    sidebarToggle.addEventListener('click', function() {
-        sidebar.classList.toggle('active');
-    });
-
     const navMenuToggle = document.getElementById('nav-menu-toggle');
 
-    navMenuToggle.addEventListener('click', function() {
-        navLinks.classList.toggle('active');
-    });
+    if (navMenuToggle) {
+        navMenuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+    }
 
+    if (sidebarToggle) {
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+        });
+    }
+    
     searchInput.addEventListener('input', () => {
         const searchTerm = searchInput.value.toLowerCase();
         const products = productList.querySelectorAll('.product-item');
@@ -163,5 +167,32 @@ document.addEventListener('DOMContentLoaded', () => {
         updateCartCount(); // Update the cart count after adding to cart
         alert(`${productQuantity} ${productName}(s) added to cart.`);
     }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const navMenuToggle = document.getElementById('nav-menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const sidebar = document.querySelector('.sidebar');
+
+    if (navMenuToggle) {
+        navMenuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+    }
+
+    if (sidebarToggle) {
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+        });
+    }
+
+    function updateCartCount() {
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+        document.querySelector('.cart-count').textContent = cartCount;
+    }
+
+    updateCartCount();
 });
 
