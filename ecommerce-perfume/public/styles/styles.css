@@ -1402,3 +1402,24 @@ main {
         padding-left: 0; /* Ensure content is not pushed off-screen */
     }
 }
+
+#checkout-button {
+    padding: 12px 30px;
+    background-color: #5cb85c;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none; /* Remove underline from the link */
+}
+
+#checkout-button a {
+    color: #fff;
+    text-decoration: none;
+}
+
+#checkout-button:hover {
+    background-color: #4cae4c;
+}
