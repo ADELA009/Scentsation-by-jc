@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
             email: orderDetails.email,
             amount: orderDetails.totalPrice * 100, // Paystack amount is in kobo
             currency: 'NGN',
-            ref: '' + Math.floor((Math.random() * 1000000000) + 1), // Generate a random reference number
+            ref: generateReference(), // Use the generateReference function
             metadata: {
                 custom_fields: [
                     {
@@ -129,6 +129,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
         handler.openIframe();
+    }
+
+    function generateReference() {
+        const randomNumbers = Math.floor((Math.random() * 2000000) + 1);
+        const currentDate = new Date();
+        const formattedDate = currentDate.toISOString().slice(0, 10); // YYYY-MM-DD
+        return `${randomNumbers}Scent${formattedDate}`;
     }
 
     // Initial update of delivery fee and total price

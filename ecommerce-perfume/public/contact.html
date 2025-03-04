@@ -34,59 +34,69 @@
 <body>
     <header>
         <nav>
+            <div class="menu-toggle" id="nav-menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
             <div class="logo">Scentsation by JC</div>
             <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="products.html">Products</a></li>
-                <li><a href="cart.html">Shopping Cart</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="contact.html">Contact</a></li>
+                <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="products.html"><i class="fas fa-box-open"></i> Products</a></li>
+                <li><a href="cart.html"><i class="fas fa-shopping-cart"></i> Shopping Cart</a></li>
+                <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
+                <li><a href="contact.html"  class="active"><i class="fas fa-envelope"></i> Contact</a></li>
             </ul>
-            <div class="menu-toggle" id="mobile-menu">
-                <span></span>
-                <span></span>
-                <span></span>
+            <div class="cart-icon">
+                <a href="cart.html">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </a>
             </div>
         </nav>
     </header>
     
     <main>
         <section id="contact">
-            <h1>Contact Us</h1>
-            <form action="contact.php" method="POST" id="contact-form">
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name" required>
-                
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-                
-                <label for="message">Message:</label>
-                <textarea id="message" name="message" required></textarea>
-                
-                <button type="submit">Send Message</button>
-            </form>
+            <div class="container">
+                <h1>Contact Us</h1>
+                <form action="contact.php" method="POST" id="contact-form">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required>
+                    
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                    
+                    <label for="message">Message:</label>
+                    <textarea id="message" name="message" required></textarea>
+                    
+                    <button type="submit">Send Message</button>
+                </form>
+            </div>
         </section>
 
         <section id="social-media">
-            <h2>Follow Us</h2>
-            <ul>
-                <li><a href="https://facebook.com" target="_blank">Facebook</a></li>
-                <li><a href="https://x.com/Adelaadeyekun" target="_blank">Twitter</a></li>
-                <li><a href="https://instagram.com" target="_blank">Instagram</a></li>
-            </ul>
+            <div class="container">
+                <h2>Follow Us</h2>
+                <ul>
+                    <li><a href="https://facebook.com" target="_blank">Facebook</a></li>
+                    <li><a href="https://x.com/Adelaadeyekun" target="_blank">Twitter</a></li>
+                    <li><a href="https://instagram.com" target="_blank">Instagram</a></li>
+                </ul>
+            </div>
         </section>
 
         <section id="faq">
-            <h2>Frequently Asked Questions</h2>
-            <div class="faq-item">
-                <h3>What is your return policy?</h3>
-                <p>We offer a 7-day return policy on all items.</p>
+            <div class="container">
+                <h2>Frequently Asked Questions</h2>
+                <div class="faq-item">
+                    <h3>What is your return policy?</h3>
+                    <p>We offer a 7-day return policy on all items.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>How can I track my order?</h3>
+                    <p>You can track your order using the tracking number provided in your confirmation email.</p>
+                </div>
+                <!-- Add more FAQ items as needed -->
             </div>
-            <div class="faq-item">
-                <h3>How can I track my order?</h3>
-                <p>You can track your order using the tracking number provided in your confirmation email.</p>
-            </div>
-            <!-- Add more FAQ items as needed -->
         </section>
     </main>
     

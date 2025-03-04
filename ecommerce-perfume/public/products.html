@@ -6,17 +6,19 @@
     <title>Products - Scentsation by JC</title>
     <link rel="stylesheet" href="styles/styles.css">
     <script src="scripts/products.js" defer></script>
-    <script src="scripts/main.js"></script>
+    <script src="scripts/main.js" defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <meta name="description" content="Explore our range of perfumes at Scentsation by JC. Find your perfect scent.">
     <meta name="keywords" content="products, Scentsation by JC, perfumes, fragrances">
     <meta name="author" content="Scentsation by JC">
     <link rel="icon" href="images/favicon.ico" type="image/x-icon">
-    <script src="scripts/categories.js" defer></script>
 </head>
 <body>
     <header>
         <nav>
+            <div class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
             <div class="logo">Scentsation by JC</div>
             <ul class="nav-links">
                 <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
@@ -25,93 +27,100 @@
                 <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
                 <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
             </ul>
-            <div class="menu-toggle" id="mobile-menu">
-                <span></span>
-                <span></span>
-                <span></span>
+            <div class="cart-icon">
+                <a href="cart.html">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </a>
             </div>
         </nav>
     </header>
     
     <main>
         <section id="search">
-            <h2>Search Products</h2>
-            <input type="text" id="search-input" placeholder="Search for perfumes...">
+            <div class="container">
+                <h2>Search Products</h2>
+                <input type="text" id="search-input" placeholder="Search for perfumes...">
+                <div id="search-message"></div>
+            </div>
         </section>
 
         <!-- Product List Section -->
         <section id="product-list">
-            <h2>Our Products</h2>
-            <div class="product-grid">
-                <div class="product-item" data-quantity="10" data-name="9Pm" data-image="images/9pm.jfif">
-                    <img src="images/9pm.jfif" alt="Perfume 1">
-                    <h3>9Pm</h3>
-                    <p>Description of Perfume 1.</p>
-                    <span>₦37,500</span>
-                    <p class="available">Available: 10</p>
-                    <label for="quantity">Quantity:</label>
-                    <input type="number" name="quantity" min="1" max="10" value="1">
-                    <button>Add to Cart</button>
-                </div>
-                <div class="product-item" data-quantity="5" data-name="Armani" data-image="images/armani.jfif">
-                    <img src="images/armani.jfif" alt="Perfume 2">
-                    <h3>Armani</h3>
-                    <p>Description of Perfume 2.</p>
-                    <span>₦45,000</span>
-                    <p class="available">Available: 5</p>
-                    <label for="quantity">Quantity:</label>
-                    <input type="number" name="quantity" min="1" max="5" value="1">
-                    <button>Add to Cart</button>
-                </div>
-                <div class="product-item" data-quantity="8" data-name="Tom Ford" data-image="images/tom.jfif">
-                    <img src="images/tom.jfif" alt="Perfume 3">
-                    <h3>Tom Ford</h3>
-                    <p>Description of Perfume 3.</p>
-                    <span>₦50,000</span>
-                    <p class="available">Available: 8</p>
-                    <label for="quantity">Quantity:</label>
-                    <input type="number" name="quantity" min="1" max="8" value="1">
-                    <button>Add to Cart</button>
-                </div>
-                <div class="product-item" data-quantity="6" data-name="nivea" data-image="images/nivea.jfif">
-                    <img src="images/nivea.jfif" alt="Perfume 3">
-                    <h3>Nivea</h3>
-                    <p>Description of Perfume 4.</p>
-                    <span>₦50,000</span>
-                    <p class="available">Available: 6</p>
-                    <label for="quantity">Quantity:</label>
-                    <input type="number" name="quantity" min="1" max="6" value="1">
-                    <button>Add to Cart</button>
-                </div>
-                <div class="product-item" data-quantity="9" data-name="Calvin" data-image="images/calvin.jfif">
-                    <img src="images/calvin.jfif" alt="Perfume 3">
-                    <h3>Calvin</h3>
-                    <p>Description of Perfume 5.</p>
-                    <span>₦50,000</span>
-                    <p class="available">Available: 9</p>
-                    <label for="quantity">Quantity:</label>
-                    <input type="number" name="quantity" min="1" max="9" value="1">
-                    <button>Add to Cart</button>
-                </div>
-                <div class="product-item" data-quantity="12" data-name="dior" data-image="images/dior.jfif">
-                    <img src="images/dior.jfif" alt="Perfume 3">
-                    <h3>Dior</h3>
-                    <p>Description of Perfume 6.</p>
-                    <span>₦50,000</span>
-                    <p class="available">Available: 12</p>
-                    <label for="quantity">Quantity:</label>
-                    <input type="number" name="quantity" min="1" max="12" value="1">
-                    <button>Add to Cart</button>
-                </div>
-                <div class="product-item" data-quantity="11" data-name="givenchy" data-image="images/givenchy.jfif">
-                    <img src="images/givenchy.jfif" alt="Perfume 3">
-                    <h3>Givenchy</h3>
-                    <p>Description of Perfume 7.</p>
-                    <span>₦50,000</span>
-                    <p class="available">Available: 11</p>
-                    <label for="quantity">Quantity:</label>
-                    <input type="number" name="quantity" min="1" max="11" value="1">
-                    <button>Add to Cart</button>
+            <div class="container">
+                <h2>Our Products</h2>
+                <div class="product-grid">
+                    <div class="product-item" data-quantity="10" data-name="9Pm" data-image="images/9pm.jfif">
+                        <img src="images/9pm.jfif" alt="Perfume 1">
+                        <h3>9Pm</h3>
+                        <p>Description of Perfume 1.</p>
+                        <span>₦37,500</span>
+                        <p class="available">Available: 10</p>
+                        <label for="quantity">Quantity:</label>
+                        <input type="number" name="quantity" min="1" max="10" value="1">
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                    <div class="product-item" data-quantity="5" data-name="Armani" data-image="images/armani.jfif">
+                        <img src="images/armani.jfif" alt="Perfume 2">
+                        <h3>Armani</h3>
+                        <p>Description of Perfume 2.</p>
+                        <span>₦45,000</span>
+                        <p class="available">Available: 5</p>
+                        <label for="quantity">Quantity:</label>
+                        <input type="number" name="quantity" min="1" max="5" value="1">
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                    <div class="product-item" data-quantity="8" data-name="Tom Ford" data-image="images/tom.jfif">
+                        <img src="images/tom.jfif" alt="Perfume 3">
+                        <h3>Tom Ford</h3>
+                        <p>Description of Perfume 3.</p>
+                        <span>₦50,000</span>
+                        <span>₦50,000</span>
+                        <p class="available">Available: 8</p>
+                        <label for="quantity">Quantity:</label>
+                        <input type="number" name="quantity" min="1" max="8" value="1">
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                    <div class="product-item" data-quantity="6" data-name="nivea" data-image="images/nivea.jfif">
+                        <img src="images/nivea.jfif" alt="Perfume 4">
+                        <h3>Nivea</h3>
+                        <p>Description of Perfume 4.</p>
+                        <span>₦50,000</span>
+                        <p class="available">Available: 6</p>
+                        <label for="quantity">Quantity:</label>
+                        <input type="number" name="quantity" min="1" max="6" value="1">
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                    <div class="product-item" data-quantity="9" data-name="Calvin" data-image="images/calvin.jfif">
+                        <img src="images/calvin.jfif" alt="Perfume 5">
+                        <h3>Calvin</h3>
+                        <p>Description of Perfume 5.</p>
+                        <span>₦50,000</span>
+                        <p class="available">Available: 9</p>
+                        <label for="quantity">Quantity:</label>
+                        <input type="number" name="quantity" min="1" max="9" value="1">
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                    <div class="product-item" data-quantity="12" data-name="dior" data-image="images/dior.jfif">
+                        <img src="images/dior.jfif" alt="Perfume 6">
+                        <h3>Dior</h3>
+                        <p>Description of Perfume 6.</p>
+                        <span>₦50,000</span>
+                        <p class="available">Available: 12</p>
+                        <label for="quantity">Quantity:</label>
+                        <input type="number" name="quantity" min="1" max="12" value="1">
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                    <div class="product-item" data-quantity="11" data-name="givenchy" data-image="images/givenchy.jfif">
+                        <img src="images/givenchy.jfif" alt="Perfume 7">
+                        <h3>Givenchy</h3>
+                        <p>Description of Perfume 7.</p>
+                        <span>₦50,000</span>
+                        <p class="available">Available: 11</p>
+                        <label for="quantity">Quantity:</label>
+                        <input type="number" name="quantity" min="1" max="11" value="1">
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
                 </div>
             </div>
         </section>
@@ -120,10 +129,11 @@
     <aside class="sidebar">
         <h3>Categories</h3>
         <ul>
-.            <li><a href="for_men.html">For Men</a></li>
+            <li><a href="products.html" class="active">All</a></li>
+            <li><a href="for_men.html">For Men</a></li>
             <li><a href="for_women.html">For Women</a></li>
-            <li><a href="below_10k.html">10k Below</a></li>
-            <li><a href="above_10k.html">10k Above</a></li>
+            <li><a href="below_10k.html">Affordable Frangrance</a></li>
+            <li><a href="above_10k.html">Exclusive Frangrance</a></li>
             <li><a href="deodorants.html">Deodorants</a></li>
             <li><a href="body_mist.html">Body Mist</a></li>
             <li><a href="perfume_oil.html">Perfume Oil</a></li>
@@ -138,7 +148,5 @@
     <footer>
         <p>&copy; 2025 Scentsation by JC. All rights reserved.</p>
     </footer>
-
-
 </body>
 </html>

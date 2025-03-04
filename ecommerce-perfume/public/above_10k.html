@@ -3,56 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Above 10k - Scentsation by JC</title>
+    <title>Exclusive Frangrance - Scentsation by JC</title>
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="styles/categories.css">
+    <script src="scripts/main.js" defer></script>
+    <script src="scripts/products.js" defer></script>
 </head>
 <body>
     <header>
         <nav>
+            <div class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
             <div class="logo">Scentsation by JC</div>
             <ul class="nav-links">
                 <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
                 <li><a href="products.html" class="active"><i class="fas fa-box-open"></i> Products</a></li>
-                <li><a href="cart.html"><i class="fas fa-shopping-cart"></i> Cart</a></li>
+                <li><a href="cart.html"><i class="fas fa-shopping-cart"></i> Shopping Cart</a></li>
                 <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
                 <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
             </ul>
+            <div class="cart-icon">
+                <a href="cart.html">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </a>
+            </div>
         </nav>
     </header>
 
     <main>
-        <section id="product-list">
-            <div class="search-container">
-                <input type="text" id="search-input" placeholder="Search perfumes above 10k...">
-                <button>Search</button>
+        <section id="search">
+            <div class="container">
+                <h2>Search Products</h2>
+                <input type="text" id="search-input" placeholder="Search for perfumes...">
+                <div id="search-message"></div>
             </div>
-            <h2>Perfumes Above 10k</h2>
-            <div class="product-grid">
-                <!-- Product items will be added here -->
-                <div class="product-item" data-name="Expensive Scent 1">
-                    <img src="images/expensive1.jpg" alt="Expensive Scent 1">
-                    <h3>Expensive Scent 1</h3>
-                    <p>An exquisite fragrance for the discerning individual.</p>
-                    <span>₦60,000</span>
-                    <div class="quantity">
-                        <label for="qty1">Quantity:</label>
-                        <input type="number" id="qty1" min="1" max="5" value="1">
-                    </div>
-                    <button>Add to Cart</button>
-                </div>
+        </section>
 
-                <div class="product-item" data-name="Luxury Aroma">
-                    <img src="images/luxuryaroma.jpg" alt="Luxury Aroma">
-                    <h3>Luxury Aroma</h3>
-                    <p>Indulge in the scent of pure luxury.</p>
-                    <span>₦85,000</span>
-                    <div class="quantity">
-                        <label for="qty2">Quantity:</label>
-                        <input type="number" id="qty2" min="1" max="8" value="1">
+        <!-- Product List Section -->
+        <section id="product-list">
+            <div class="container">
+                <h2>Men's Fragrances</h2>
+                <div class="product-grid">
+                    <!-- Product items will be added here -->
+                    <div class="product-item" data-name="Urban Sport">
+                        <img src="images/mens_2.jpg" alt="Urban Sport" loading="lazy">
+                        <h3>Urban Sport</h3>
+                        <p>Fresh and energetic scent for the active man.</p>
+                        <span>₦12,500</span>
+                        <p class="available">Available: 5</p>
+                        <label for="quantity">Quantity:</label>
+                        <input type="number" name="quantity" min="1" max="5" value="1">
+                        <button>Add to Cart</button>
                     </div>
-                    <button>Add to Cart</button>
+                    <div class="product-item" data-quantity="10" data-name="9Pm" data-image="images/9pm.jfif">
+                        <img src="images/9pm.jfif" alt="Perfume 1" loading="lazy">
+                        <h3>9Pm</h3>
+                        <p>Description of Perfume 1.</p>
+                        <span>₦37,500</span>
+                        <p class="available">Available: 10</p>
+                        <label for="quantity">Quantity:</label>
+                        <input type="number" name="quantity" min="1" max="10" value="1">
+                        <button>Add to Cart</button>
+                    </div>
+                    <div class="product-item" data-quantity="5" data-name="Armani" data-image="images/armani.jfif">
+                        <img src="images/armani.jfif" alt="Perfume 2" loading="lazy">
+                        <h3>Armani</h3>
+                        <p>Description of Perfume 2.</p>
+                        <span>₦45,000</span>
+                        <p class="available">Available: 5</p>
+                        <label for="quantity">Quantity:</label>
+                        <input type="number" name="quantity" min="1" max="5" value="1">
+                        <button>Add to Cart</button>
+                    </div>
+                    <div class="product-item" data-quantity="8" data-name="Tom Ford" data-image="images/tom.jfif">
+                        <img src="images/tom.jfif" alt="Perfume 3" loading="lazy">
+                        <h3>Tom Ford</h3>
+                        <p>Description of Perfume 3.</p>
+                        <span>₦50,000</span>
+                        <p class="available">Available: 8</p>
+                        <label for="quantity">Quantity:</label>
+                        <input type="number" name="quantity" min="1" max="8" value="1">
+                        <button>Add to Cart</button>
+                    </div>
                 </div>
             </div>
         </section>
@@ -61,10 +95,11 @@
     <aside class="sidebar">
         <h3>Categories</h3>
         <ul>
+            <li><a href="products.html">All</a></li>
             <li><a href="for_men.html">For Men</a></li>
             <li><a href="for_women.html">For Women</a></li>
-            <li><a href="below_10k.html">10k Below</a></li>
-            <li><a href="above_10k.html" class="active">10k Above</a></li>
+            <li><a href="below_10k.html">Affordable Frangrance</a></li>
+            <li><a href="above_10k.html" class="active">Exclusive Frangrance</a></li>
             <li><a href="deodorants.html">Deodorants</a></li>
             <li><a href="body_mist.html">Body Mist</a></li>
             <li><a href="perfume_oil.html">Perfume Oil</a></li>
@@ -73,13 +108,11 @@
     </aside>
 
     <div class="menu-toggle" id="sidebar-toggle">
-        <i class="fas fa-bars"></i> Menu
+        <i class="fas fa-bars"></i>
     </div>
 
     <footer>
         <p>&copy; 2025 Scentsation by JC. All rights reserved.</p>
     </footer>
-
-    <script src="scripts/categories.js" defer></script>
 </body>
 </html>

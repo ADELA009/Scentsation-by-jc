@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const menuToggle = document.querySelector('.menu-toggle');
+    const menuToggle = document.querySelector('.menuu-toggle');
     const nav = document.querySelector('nav ul');
 
     menuToggle.addEventListener('click', () => {
@@ -90,18 +90,18 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const cartList = document.querySelector('.cart-list');
+    const cartList = document.getElementById('cart-list');
     const emptyCartMessage = document.getElementById('empty-cart-message');
-    const checkoutButton = document.getElementById('checkout-button');
     const totalPriceElement = document.getElementById('total-price');
+    const checkoutButton = document.getElementById('checkout-button');
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
     function renderCart() {
         cartList.innerHTML = '';
         if (cart.length === 0) {
             emptyCartMessage.style.display = 'block';
             checkoutButton.style.display = 'none';
-            totalPriceElement.textContent = '$0.00';
+            totalPriceElement.textContent = '₦0.00';
         } else {
             emptyCartMessage.style.display = 'none';
             checkoutButton.style.display = 'block';
@@ -112,15 +112,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 cartItem.innerHTML = `
                     <img src="${product.image}" alt="${product.name}">
                     <h3>${product.name}</h3>
-                    <p>Price: ${product.price}</p>
+                    <p>Price: ₦${product.price.toLocaleString()}</p>
                     <p>Quantity: ${product.quantity}</p>
-                    <p>Total: $${(parseFloat(product.price.replace('$', '')) * product.quantity).toFixed(2)}</p>
+                    <p>Total: ₦${(product.price * product.quantity).toLocaleString()}</p>
                     <button class="remove-button" data-index="${index}">Remove</button>
                 `;
                 cartList.appendChild(cartItem);
-                totalPrice += parseFloat(product.price.replace('$', '')) * product.quantity;
+                totalPrice += product.price * product.quantity;
             });
-            totalPriceElement.textContent = `$${totalPrice.toFixed(2)}`;
+            totalPriceElement.textContent = `₦${totalPrice.toLocaleString()}`;
         }
     }
 

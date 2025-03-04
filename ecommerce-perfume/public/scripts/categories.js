@@ -1,10 +1,39 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Menu toggle functionality
-    const menuToggle = document.querySelector('.menu-toggle');
+    const navToggle = document.getElementById('nav-toggle');
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const navLinks = document.querySelector('.nav-links');
     const sidebar = document.querySelector('.sidebar');
 
-    menuToggle.addEventListener('click', () => {
-        sidebar.classList.toggle('active');
+    // Function to close all menus
+    function closeAllMenus() {
+        navLinks.classList.remove('active');
+        sidebar.classList.remove('active');
+        navToggle.classList.remove('active');
+        sidebarToggle.classList.remove('active');
+        // Reset icons to default
+        if (navToggle.querySelector('i')) {
+            navToggle.querySelector('i').classList.remove('fa-times');
+            navToggle.querySelector('i').classList.add('fa-bars');
+        }
+        if (sidebarToggle.querySelector('i')) {
+            sidebarToggle.querySelector('i').classList.remove('fa-times');
+            sidebarToggle.querySelector('i').classList.add('fa-list');
+        }
+    }
+
+  
+    // Close menus when clicking outside
+    document.addEventListener('click', (e) => {
+        closeAllMenus();
+    });
+
+    // Prevent clicks inside the menus from closing them
+    navLinks.addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
+
+    sidebar.addEventListener('click', (e) => {
+        e.stopPropagation();
     });
 
     // Search functionality
@@ -66,36 +95,11 @@ document.addEventListener('DOMContentLoaded', () => {
         alert(`${productQuantity} ${productName}(s) added to cart.`);
     }
 
-    // Function to update product availability
-    function updateProductAvailability() {
-        const products = document.querySelectorAll('.product-item');
-        products.forEach(product => {
-            const productName = product.getAttribute('data-name');
-            fetch('/api/check-availability', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ productName })
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log(`Availability for ${productName}:`, data); // Debugging statement
-                if (data.availableQuantity !== undefined) {
-                    product.setAttribute('data-quantity', data.availableQuantity);
-                    product.querySelector('.available').textContent = `Available: ${data.availableQuantity}`;
-                    product.querySelector('input[name="quantity"]').max = data.availableQuantity;
-                }
-            })
-            .catch(error => {
-                console.error('Error checking product availability:', error);
-            });
-        });
-    }
+    navToggle.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+    });
 
-    // Check product availability every 30 seconds
-    setInterval(updateProductAvailability, 30000);
-
-    // Initial check on page load
-    updateProductAvailability();
+    sidebarToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('active');
+    });
 });

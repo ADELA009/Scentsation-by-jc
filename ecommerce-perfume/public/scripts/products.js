@@ -2,11 +2,30 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('search-input');
     const productList = document.getElementById('product-list');
     const searchMessage = document.getElementById('search-message');
+    const productGrid = document.getElementsByClassName('product-grid');
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-    document.getElementById('sidebar-toggle').addEventListener('click', function() {
-        document.querySelector('.sidebar').classList.toggle('active');
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const sidebar = document.querySelector('.sidebar');
+
+    sidebarToggle.addEventListener('click', function() {
+        sidebar.classList.toggle('active');
     });
+
+    const navMenuToggle = document.getElementById('nav-menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+
+    navMenuToggle.addEventListener('click', function() {
+        navLinks.classList.toggle('active');
+    });
+
+    function updateCartCount() {
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+        document.querySelector('.cart-count').textContent = cartCount;
+    }
+
+    updateCartCount(); // Initial call to set the count on page load
 
     searchInput.addEventListener('input', () => {
         const searchTerm = searchInput.value.toLowerCase();
@@ -15,22 +34,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
         products.forEach(product => {
             const productName = product.querySelector('h3').textContent.toLowerCase();
-            if (productName.includes(searchTerm)) {
-                product.style.display = 'block';
+            const productprice = product.querySelector('span').textContent;
+            if (productName.includes(searchTerm) || productprice.includes(searchTerm)) {
+                product.style.display = 'flex';
                 found = true;
             } else {
-                product.style.display = 'none';
+                    product.style.display = 'none';
             }
         });
 
-        if (!found) {
-            searchMessage.style.display = 'block';
-        } else {
-            searchMessage.style.display = 'none';
+        if(!found) {
+            searchMessage.innerHTML = `${searchTerm} is not available`
         }
     });
 
-    const addToCartButtons = document.querySelectorAll('.product-item button');
+    const addToCartButtons = document.querySelectorAll('.add-to-cart');
     addToCartButtons.forEach(button => {
         button.addEventListener('click', addToCart);
     });
@@ -61,43 +79,14 @@ document.addEventListener('DOMContentLoaded', () => {
             cart.push(product);
         }
 
-        productItem.setAttribute('data-quantity', availableQuantity - productQuantity);
-        productItem.querySelector('input[name="quantity"]').max = availableQuantity - productQuantity;
+        // Update available quantity on the product item
+        const newAvailableQuantity = availableQuantity - productQuantity;
+        productItem.setAttribute('data-quantity', newAvailableQuantity);
+        productItem.querySelector('.available').textContent = `Available: ${newAvailableQuantity}`;
+        productItem.querySelector('input[name="quantity"]').max = newAvailableQuantity;
 
         localStorage.setItem('cart', JSON.stringify(cart));
+        updateCartCount(); // Update the cart count after adding to cart
         alert(`${productQuantity} ${productName}(s) added to cart.`);
     }
-
-    // Function to update product availability
-    function updateProductAvailability() {
-        const products = document.querySelectorAll('.product-item');
-        products.forEach(product => {
-            const productName = product.getAttribute('data-name');
-            fetch('/api/check-availability', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ productName })
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log(`Availability for ${productName}:`, data); // Debugging statement
-                if (data.availableQuantity !== undefined) {
-                    product.setAttribute('data-quantity', data.availableQuantity);
-                    product.querySelector('.available').textContent = `Available: ${data.availableQuantity}`;
-                    product.querySelector('input[name="quantity"]').max = data.availableQuantity;
-                }
-            })
-            .catch(error => {
-                console.error('Error checking product availability:', error);
-            });
-        });
-    }
-
-    // Check product availability every 30 seconds
-    setInterval(updateProductAvailability, 3000);
-
-    // Initial check on page load
-    updateProductAvailability();
 });

@@ -6,6 +6,7 @@
     <title>Scentsation by JC</title>
     <link rel="stylesheet" href="styles/styles.css">
     <script src="scripts/main.js" defer></script>
+    <script src="scripts/products.js" defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <meta name="description" content="Discover the finest perfumes and fragrances at Scentsation by JC. Shop now for exclusive deals and offers.">
     <meta name="keywords" content="perfume, fragrance, scents, shop, buy perfume, Scentsation by JC">
@@ -21,10 +22,7 @@
         "publisher": {
             "@type": "Organization",
             "name": "Scentsation by JC",
-            "logo": {
-                "@type": "ImageObject",
-                "url": "http://www.scentsationbyjc.com/images/logo.png"
-            }
+            "logo": "URL_TO_YOUR_LOGO"
         }
     }
     </script>
@@ -32,6 +30,9 @@
 <body>
     <header>
         <nav>
+            <div class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
             <div class="logo">Scentsation by JC</div>
             <ul class="nav-links">
                 <li><a href="index.html" class="active"><i class="fas fa-home"></i> Home</a></li>
@@ -40,10 +41,11 @@
                 <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
                 <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
             </ul>
-            <div class="menu-toggle" id="mobile-menu">
-                <span></span>
-                <span></span>
-                <span></span>
+            <div class="cart-icon">
+                <a href="cart.html">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </a>
             </div>
         </nav>
     </header>
@@ -61,30 +63,42 @@
         <!-- Slideshow Section -->
         <section id="slideshow">
             <div class="slideshow-container">
-                <div class="mySlides fade">
+                <div class="mySlides">
                     <img src="images/perf 2.jfif" alt="Perfume 1">
                 </div>
-                <div class="mySlides fade">
+                <div class="mySlides">
                     <img src="images/perf.jfif" alt="Perfume 2">
                 </div>
-                <div class="mySlides fade">
+                <div class="mySlides">
                     <img src="images/perf3.jfif" alt="Perfume 3">
+                </div>
+                <div class="mySlides">
+                    <img src="images/berry.jfif" alt="Perfume 4">
+                </div>
+                <div class="mySlides">
+                    <img src="images/9pm.jfif" alt="Perfume 5">
+                </div>
+                <div class="mySlides">
+                    <img src="images/armani.jfif" alt="Perfume 6">
                 </div>
             </div>
             <br>
-            <div>
-                <span class="dot"></span> 
-                <span class="dot"></span> 
-                <span class="dot"></span> 
+            <div style="text-align:center">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
             </div>
         </section>
 
         <!-- Product Showcase Section -->
         <section id="product-showcase">
             <h2>Featured Products</h2>
-            <div class="product-list">
+            <div class="product-grid">
                 <div class="product-item" data-quantity="10">
-                    <img src="images/dior.jfif" alt="Perfume 1">
+                    <img src="images/dior.jfif" alt="Perfume 1" loading="lazy">
                     <h3>Dior</h3>
                     <p>Description of Perfume 1.</p>
                     <span>₦37,500</span>
@@ -94,7 +108,7 @@
                     <button>Add to Cart</button>
                 </div>
                 <div class="product-item" data-quantity="5">
-                    <img src="images/armani.jfif" alt="Perfume 2">
+                    <img src="images/armani.jfif" alt="Perfume 2" loading="lazy">
                     <h3>Armani</h3>
                     <p>Description of Perfume 2.</p>
                     <span>₦45,000</span>
@@ -104,7 +118,7 @@
                     <button>Add to Cart</button>
                 </div>
                 <div class="product-item" data-quantity="8">
-                    <img src="images/dolce.jfif" alt="Perfume 3">
+                    <img src="images/dolce.jfif" alt="Perfume 3" loading="lazy">
                     <h3>Dolce and Gabbana</h3>
                     <p>Description of Perfume 3.</p>
                     <span>₦52,500</span>
