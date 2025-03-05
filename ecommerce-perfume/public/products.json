@@ -1,0 +1,58 @@
+[
+    {
+      "id": "1",
+      "name": "9Pm",
+      "price": 37500,
+      "image": "images/9pm.jfif",
+      "description": "Description of 9Pm.",
+      "availableQuantity": 10
+    },
+    {
+      "id": "2",
+      "name": "Armani",
+      "price": 45000,
+      "image": "images/armani.jfif",
+      "description": "Description of Armani.",
+      "availableQuantity": 5
+    },
+    {
+      "id": "3",
+      "name": "Tom Ford",
+      "price": 50000,
+      "image": "images/tom.jfif",
+      "description": "Description of Tom Ford.",
+      "availableQuantity": 8
+    },
+    {
+      "id": "4",
+      "name": "Nivea",
+      "price": 50000,
+      "image": "images/nivea.jfif",
+      "description": "Description of Nivea.",
+      "availableQuantity": 6
+    },
+    {
+      "id": "5",
+      "name": "Calvin",
+      "price": 50000,
+      "image": "images/calvin.jfif",
+      "description": "Description of Calvin.",
+      "availableQuantity": 9
+    },
+    {
+      "id": "6",
+      "name": "Dior",
+      "price": 50000,
+      "image": "images/dior.jfif",
+      "description": "Description of Dior.",
+      "availableQuantity": 12
+    },
+    {
+      "id": "7",
+      "name": "Givenchy",
+      "price": 50000,
+      "image": "images/givenchy.jfif",
+      "description": "Description of Givenchy.",
+      "availableQuantity": 11
+    }
+  ]
