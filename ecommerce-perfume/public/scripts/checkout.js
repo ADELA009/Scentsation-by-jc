@@ -121,6 +121,34 @@ document.addEventListener('DOMContentLoaded', () => {
             callback: function(response) {
                 // Payment successful
                 console.log('Payment successful. Transaction reference:', response.reference);
+                
+                // Retrieve any existing orders from localStorage
+                const orders = JSON.parse(localStorage.getItem('orders')) || [];
+                
+                // Generate a unique order id (using generateReference for this example)
+                const orderId = generateReference();
+                
+                // Build the order object with details from orderDetails
+                const order = {
+                    id: orderId,
+                    customerName: orderDetails.name,
+                    email: orderDetails.email,
+                    state: orderDetails.state,
+                    location: orderDetails.location,         // User's location
+                    pickupLocation: orderDetails.pickupLocation, // New: Pickup location
+                    items: orderDetails.cart,
+                    deliveryFee: orderDetails.deliveryFee,
+                    total: orderDetails.totalPrice,
+                    status: "paid", // Payment was successful
+                    transactionReference: response.reference,
+                    date: new Date().toISOString()
+                };
+                
+                // Save the order
+                orders.push(order);
+                localStorage.setItem('orders', JSON.stringify(orders));
+                
+                // Clear the cart and redirect to a confirmation page
                 localStorage.removeItem('cart');
                 window.location.href = 'confirmation.html';
             },

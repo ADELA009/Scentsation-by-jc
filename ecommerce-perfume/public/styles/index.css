@@ -1,0 +1,21 @@
+/* Notification icon styles */
+.notification-icon {
+    position: relative;
+    display: inline-block;
+    margin-left: 15px;
+    cursor: pointer;
+    color: #fff;
+    font-size: 18px;
+    order: 4;
+}
+
+.notification-icon .notification-count {
+    position: absolute;
+    top: -5px;
+    right: -10px;
+    background-color: red;
+    color: #fff;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 12px;
+}

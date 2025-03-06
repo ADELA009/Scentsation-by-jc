@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('search-input');
     const productList = document.getElementById('product-list');
     const searchMessage = document.getElementById('search-message');
+    const productGrid = document.querySelector('.product-grid');
+    const categoryLinks = document.querySelectorAll('.sidebar a');
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     let productQuantities = JSON.parse(localStorage.getItem('productQuantities')) || {}; // Load product quantities from localStorage
 
@@ -87,9 +89,10 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 document.body.removeChild(popup);
             }, 300);
-        }, 3000);
+        }, 4000); // Show for 4 seconds
     }
 
+    // Update the addToCart function
     function addToCart(event) {
         const button = event.target;
         const productId = button.getAttribute('data-product-id');
@@ -120,9 +123,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Update the available quantity
         productQuantities[productId] -= quantity;
-        if (productQuantities[productId] < 0) {
+        if (productQuantities[productId] <= 0) {
             productQuantities[productId] = 0;
+            
+            // Update inventory quantity
+            const inventory = JSON.parse(localStorage.getItem('inventory')) || [];
+            const productIndex = inventory.findIndex(item => item.id === productId);
+            if (productIndex !== -1) {
+                inventory.splice(productIndex, 1); // Remove product from inventory
+                localStorage.setItem('inventory', JSON.stringify(inventory));
+            }
+            
+            // Remove empty products
+            removeEmptyProducts();
         }
+        
         localStorage.setItem('productQuantities', JSON.stringify(productQuantities));
 
         // Update the available quantity displayed on the page
@@ -135,11 +150,28 @@ document.addEventListener('DOMContentLoaded', () => {
         updateCartCount(); // Update cart count after adding product
     }
 
-    const productGrid = document.querySelector('.product-grid');
+    function removeFromCart(productId) {
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const productIndex = cart.findIndex(item => item.id === productId);
 
-    function loadProducts() {
+        if (productIndex !== -1) {
+            const product = cart[productIndex];
+            cart.splice(productIndex, 1);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            showPopupMessage(`Removed ${product.name} from cart!`);
+            updateCartCount(); // Update cart count after removing product
+        }
+    }
+
+    function loadProducts(category = 'All') {
         const products = JSON.parse(localStorage.getItem('inventory')) || [];
-        productGrid.innerHTML = products.map(product => `
+        // Filter out products with zero quantity
+        const availableProducts = products.filter(product => product.quantity > 0);
+        const filteredProducts = category === 'All' ? 
+            availableProducts : 
+            availableProducts.filter(product => product.category === category);
+
+        productGrid.innerHTML = filteredProducts.map(product => `
             <div class="product-item" data-product-id="${product.id}" data-quantity="${product.quantity}">
                 <img src="${product.image}" alt="${product.name}" loading="lazy">
                 <h3>${product.name}</h3>
@@ -161,5 +193,44 @@ document.addEventListener('DOMContentLoaded', () => {
         updateAvailableQuantities(); // Update available quantities after loading products
     }
 
-    loadProducts();
+    function removeEmptyProducts() {
+        const inventory = JSON.parse(localStorage.getItem('inventory')) || [];
+        const emptyProducts = inventory.filter(product => product.quantity <= 0);
+        
+        if (emptyProducts.length > 0) {
+            // Remove empty products from inventory
+            const updatedInventory = inventory.filter(product => product.quantity > 0);
+            localStorage.setItem('inventory', JSON.stringify(updatedInventory));
+            
+            // Alert admin about removed products
+            const message = emptyProducts.map(product => 
+                `${product.name} (ID: ${product.id})`
+            ).join('\n');
+            
+            // Store notification for admin
+            const notifications = JSON.parse(localStorage.getItem('adminNotifications')) || [];
+            notifications.push({
+                type: 'stock',
+                message: `Products removed due to zero quantity:\n${message}`,
+                date: new Date().toISOString()
+            });
+            localStorage.setItem('adminNotifications', JSON.stringify(notifications));
+            
+            // Refresh the product display
+            loadProducts();
+        }
+    }
+
+    categoryLinks.forEach(link => {
+        link.addEventListener('click', (event) => {
+            event.preventDefault();
+            const category = event.target.dataset.category;
+            loadProducts(category);
+
+            categoryLinks.forEach(link => link.classList.remove('active'));
+            event.target.classList.add('active');
+        });
+    });
+
+    loadProducts(); // Load all products by default
 });

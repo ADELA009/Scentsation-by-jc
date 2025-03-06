@@ -80,7 +80,7 @@ nav .logo {
 
 .cart-icon {
     display: flex;
-    order: 4; /* Cart icon on the right */
+    order: 5; /* Cart icon on the right */
     position: relative; /* Add this */
 }
 
