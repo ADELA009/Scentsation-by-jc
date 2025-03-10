@@ -5,7 +5,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const productGrid = document.querySelector('.product-grid');
     const categoryLinks = document.querySelectorAll('.sidebar a');
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    let productQuantities = JSON.parse(localStorage.getItem('productQuantities')) || {}; // Load product quantities from localStorage
+    let productQuantities = {}; // productQuantities is no longer loaded from localStorage
+    const categoryFilter = document.getElementById("category-filter"); // Get category filter
+    const productContainer = document.getElementById("product-container"); // Get product container
 
     const sidebarToggle = document.getElementById('sidebar-toggle');
     const sidebar = document.querySelector('.sidebar');
@@ -28,51 +30,32 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Function to update available quantity on page load
-    function updateAvailableQuantities() {
+    function updateAvailableQuantities(products) {
         const productItems = document.querySelectorAll('.product-item');
         productItems.forEach(productItem => {
             const productId = productItem.dataset.productId;
             const availableQuantitySpan = productItem.querySelector('.available-quantity');
             const quantityInput = productItem.querySelector('input[name="quantity"]');
 
-            if (productQuantities[productId] !== undefined) {
-                productItem.dataset.quantity = productQuantities[productId];
-                availableQuantitySpan.textContent = productQuantities[productId];
-                quantityInput.max = productQuantities[productId];
+            // Find the product in the fetched product list
+            const product = products.find(p => p.id == productId);
+
+            if (product) {
+                productQuantities[productId] = product.quantity; // Update productQuantities
+                productItem.dataset.quantity = product.quantity;
+                availableQuantitySpan.textContent = product.quantity;
+                quantityInput.max = product.quantity;
             } else {
-                // Initialize productQuantities if not already set
-                productQuantities[productId] = parseInt(productItem.dataset.quantity);
-                availableQuantitySpan.textContent = productQuantities[productId];
-                quantityInput.max = productQuantities[productId];
+                console.warn(`Product with ID ${productId} not found.`);
             }
         });
     }
 
-    updateAvailableQuantities(); // Call on page load
-
     updateCartCount(); // Initial call to set the count on page load
 
-    searchInput.addEventListener('input', () => {
-        const searchTerm = searchInput.value.toLowerCase();
-        const products = productList.querySelectorAll('.product-item');
-        let found = false;
-
-        products.forEach(product => {
-            const productName = product.querySelector('h3').textContent.toLowerCase();
-            if (productName.includes(searchTerm)) {
-                product.style.display = 'block';
-                found = true;
-            } else {
-                product.style.display = 'none';
-            }
-        });
-
-        if (!found) {
-            searchMessage.textContent = `${searchTerm} is not available`;
-        } else {
-            searchMessage.textContent = '';
-        }
-    });
+    // Event listeners for filtering and searching
+    categoryFilter.addEventListener("change", filterProducts);
+    searchInput.addEventListener("input", filterProducts);
 
     function showPopupMessage(message) {
         const popup = document.createElement('div');
@@ -114,40 +97,19 @@ document.addEventListener('DOMContentLoaded', () => {
             const product = {
                 id: productId,
                 name: productItem.querySelector('h3').textContent,
-                price: parseFloat(productItem.querySelector('.product-price').textContent.replace('₦', '').replace(',', '')),
+                price: parseFloat(productItem.querySelector('.price').textContent.replace('₦', '').replace(',', '')),
                 quantity: quantity,
                 image: productItem.querySelector('img').src
             };
             cart.push(product);
         }
 
-        // Update the available quantity
-        productQuantities[productId] -= quantity;
-        if (productQuantities[productId] <= 0) {
-            productQuantities[productId] = 0;
-            
-            // Update inventory quantity
-            const inventory = JSON.parse(localStorage.getItem('inventory')) || [];
-            const productIndex = inventory.findIndex(item => item.id === productId);
-            if (productIndex !== -1) {
-                inventory.splice(productIndex, 1); // Remove product from inventory
-                localStorage.setItem('inventory', JSON.stringify(inventory));
-            }
-            
-            // Remove empty products
-            removeEmptyProducts();
-        }
-        
-        localStorage.setItem('productQuantities', JSON.stringify(productQuantities));
-
-        // Update the available quantity displayed on the page
-        productItem.dataset.quantity = productQuantities[productId];
-        productItem.querySelector('.available-quantity').textContent = productQuantities[productId];
-        quantityInput.max = productQuantities[productId];
-
         localStorage.setItem('cart', JSON.stringify(cart));
         showPopupMessage(`Added ${quantity} of ${productItem.querySelector('h3').textContent} to cart!`);
         updateCartCount(); // Update cart count after adding product
+
+        // Update product quantity in database
+        updateProductQuantity(productId, productQuantities[productId] - quantity);
     }
 
     function removeFromCart(productId) {
@@ -163,74 +125,114 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function loadProducts(category = 'All') {
-        const products = JSON.parse(localStorage.getItem('inventory')) || [];
-        // Filter out products with zero quantity
-        const availableProducts = products.filter(product => product.quantity > 0);
-        const filteredProducts = category === 'All' ? 
-            availableProducts : 
-            availableProducts.filter(product => product.category === category);
+    function loadProducts() {
+        fetch('http://scensation_api.local/get_inventory.php')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                displayProducts(data);
+                updateAvailableQuantities(data); // Update quantities after loading
+            })
+            .catch(error => {
+                console.error('Error fetching products:', error);
+                productContainer.innerHTML = '<p>Error loading products.</p>';
+            });
+    }
 
-        productGrid.innerHTML = filteredProducts.map(product => `
-            <div class="product-item" data-product-id="${product.id}" data-quantity="${product.quantity}">
-                <img src="${product.image}" alt="${product.name}" loading="lazy">
+    function displayProducts(products) {
+        productContainer.innerHTML = ""; // Clear existing content
+        if (products.length === 0) {
+            productContainer.innerHTML = "<p>No products found.</p>";
+            return;
+        }
+
+        products.forEach(product => {
+            const productCard = document.createElement("div");
+            productCard.className = "product-item"; // Use product-item class
+            productCard.dataset.productId = product.id; // Set product ID
+            productCard.dataset.quantity = product.quantity; // Set initial quantity
+            productCard.innerHTML = `
+                <img src="${product.image}" alt="${product.name}">
                 <h3>${product.name}</h3>
+                <p class="price">₦${product.price.toLocaleString()}</p>
                 <p>${product.description}</p>
-                <span class="product-price">₦${product.price.toLocaleString()}</span>
                 <p class="available">Available: <span class="available-quantity">${product.quantity}</span></p>
                 <label for="quantity-${product.id}">Quantity:</label>
                 <input type="number" id="quantity-${product.id}" name="quantity" min="1" max="${product.quantity}" value="1">
                 <button class="add-to-cart-btn" data-product-id="${product.id}">Add to Cart</button>
-            </div>
-        `).join('');
+            `;
+            productContainer.appendChild(productCard);
+        });
 
         // Add event listeners to "Add to Cart" buttons
         const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
         addToCartButtons.forEach(button => {
             button.addEventListener('click', addToCart);
         });
-
-        updateAvailableQuantities(); // Update available quantities after loading products
     }
 
-    function removeEmptyProducts() {
-        const inventory = JSON.parse(localStorage.getItem('inventory')) || [];
-        const emptyProducts = inventory.filter(product => product.quantity <= 0);
-        
-        if (emptyProducts.length > 0) {
-            // Remove empty products from inventory
-            const updatedInventory = inventory.filter(product => product.quantity > 0);
-            localStorage.setItem('inventory', JSON.stringify(updatedInventory));
-            
-            // Alert admin about removed products
-            const message = emptyProducts.map(product => 
-                `${product.name} (ID: ${product.id})`
-            ).join('\n');
-            
-            // Store notification for admin
-            const notifications = JSON.parse(localStorage.getItem('adminNotifications')) || [];
-            notifications.push({
-                type: 'stock',
-                message: `Products removed due to zero quantity:\n${message}`,
-                date: new Date().toISOString()
+    function filterProducts() {
+        const category = categoryFilter.value;
+        const searchTerm = searchInput.value.toLowerCase();
+
+        fetch('http://scensation_api.local/get_inventory.php')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                let filteredProducts = data;
+
+                if (category !== "all") {
+                    filteredProducts = filteredProducts.filter(product => product.category === category);
+                }
+
+                if (searchTerm !== "") {
+                    filteredProducts = filteredProducts.filter(product =>
+                        product.name.toLowerCase().includes(searchTerm) ||
+                        product.description.toLowerCase().includes(searchTerm)
+                    );
+                }
+
+                displayProducts(filteredProducts);
+                updateAvailableQuantities(filteredProducts); // Update quantities after filtering
+            })
+            .catch(error => {
+                console.error('Error fetching products:', error);
+                productContainer.innerHTML = '<p>Error loading products.</p>';
             });
-            localStorage.setItem('adminNotifications', JSON.stringify(notifications));
-            
-            // Refresh the product display
-            loadProducts();
-        }
     }
 
-    categoryLinks.forEach(link => {
-        link.addEventListener('click', (event) => {
-            event.preventDefault();
-            const category = event.target.dataset.category;
-            loadProducts(category);
-
-            categoryLinks.forEach(link => link.classList.remove('active'));
-            event.target.classList.add('active');
+    function updateProductQuantity(productId, newQuantity) {
+        fetch('http://scentsation_api.local/update_product_quantity.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams({
+                id: productId,
+                quantity: newQuantity
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                console.log(`Product ${productId} quantity updated successfully.`);
+                loadProducts(); // Reload products to reflect updated quantity
+            } else {
+                console.error(`Error updating product ${productId} quantity:`, data.error);
+            }
+        })
+        .catch(error => {
+            console.error('Error updating product quantity:', error);
         });
-    });
+    }
 
     loadProducts(); // Load all products by default
 });

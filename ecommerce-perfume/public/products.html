@@ -40,7 +40,18 @@
         <section id="search">
             <div class="container">
                 <h2>Search Products</h2>
-                <input type="text" id="search-input" placeholder="Search for perfumes...">
+                <select id="category-filter">
+                    <option value="all">All Categories</option>
+                    <option value="For Men">For Men</option>
+                    <option value="For Women">For Women</option>
+                    <option value="Affordable Fragrance">Affordable Fragrance</option>
+                    <option value="Exclusive Fragrance">Exclusive Fragrance</option>
+                    <option value="Deodorants">Deodorants</option>
+                    <option value="Body Mist">Body Mist</option>
+                    <option value="Perfume Oil">Perfume Oil</option>
+                    <option value="Perfumes">Perfumes</option>
+                </select>
+                <input type="text" id="search-input" placeholder="Search products...">
                 <div id="search-message"></div>
             </div>
         </section>
@@ -49,8 +60,8 @@
         <section id="product-list">
             <div class="container">
                 <h2>Our Products</h2>
-                <div class="product-grid">
-                    <!-- Products will be loaded here by products.js -->
+                <div id="product-container" class="product-grid">
+                    <!-- Products will be displayed here -->
                 </div>
             </div>
         </section>
@@ -59,7 +70,7 @@
     <aside class="sidebar">
         <h3>Categories</h3>
         <ul>
-            <li><a href="products.html" class="active" data-category="All">All</a></li>
+            <li><a href="#" class="active" data-category="All">All</a></li>
             <li><a href="#" data-category="For Men">For Men</a></li>
             <li><a href="#" data-category="For Women">For Women</a></li>
             <li><a href="#" data-category="Affordable Fragrance">Affordable Fragrance</a></li>
