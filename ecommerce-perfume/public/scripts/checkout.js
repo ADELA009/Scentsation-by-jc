@@ -72,9 +72,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const formData = new FormData(checkoutForm);
         const orderDetails = {
             name: formData.get('name'),
+            email: formData.get('email'),
             state: formData.get('state'),
             location: formData.get('location'),
-            email: formData.get('email'),
             cart: JSON.parse(localStorage.getItem('cart')) || [],
             deliveryFee: parseFloat(deliveryFeeAmountElement.textContent.replace(/,/g, '')),
             totalPrice: parseFloat(totalPriceElement.textContent.replace(/,/g, ''))
@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     {
                         display_name: "Items",
                         variable_name: "itemDetails",
-                        value: orderDetails.cart
+                        value: JSON.stringify(orderDetails.cart) // Stringify the cart
                     },
                     {
                         display_name: "Delivery Fee",
@@ -121,42 +121,68 @@ document.addEventListener('DOMContentLoaded', () => {
             callback: function(response) {
                 // Payment successful
                 console.log('Payment successful. Transaction reference:', response.reference);
-                
-                // Retrieve any existing orders from localStorage
-                const orders = JSON.parse(localStorage.getItem('orders')) || [];
-                
-                // Generate a unique order id (using generateReference for this example)
-                const orderId = generateReference();
-                
-                // Build the order object with details from orderDetails
-                const order = {
-                    id: orderId,
-                    customerName: orderDetails.name,
-                    email: orderDetails.email,
-                    state: orderDetails.state,
-                    location: orderDetails.location,         // User's location
-                    pickupLocation: orderDetails.pickupLocation, // New: Pickup location
-                    items: orderDetails.cart,
-                    deliveryFee: orderDetails.deliveryFee,
-                    total: orderDetails.totalPrice,
-                    status: "paid", // Payment was successful
-                    transactionReference: response.reference,
-                    date: new Date().toISOString()
-                };
-                
-                // Save the order
-                orders.push(order);
-                localStorage.setItem('orders', JSON.stringify(orders));
-                
-                // Clear the cart and redirect to a confirmation page
-                localStorage.removeItem('cart');
-                window.location.href = 'confirmation.html';
+
+                // Send order data to the server
+                sendOrderToServer(orderDetails, response.reference);
             },
             onClose: function() {
                 console.log('Payment window closed.');
             }
         });
         handler.openIframe();
+    }
+
+    function sendOrderToServer(orderDetails, transactionReference) {
+        console.log('Sending order to server...');
+        console.log('Order details:', orderDetails);
+        console.log('Transaction reference:', transactionReference);
+
+        const orderData = {
+            customerName: orderDetails.name,
+            email: orderDetails.email,
+            state: orderDetails.state,
+            location: orderDetails.location,
+            deliveryFee: orderDetails.deliveryFee,
+            total: orderDetails.totalPrice,
+            items: orderDetails.cart,
+            transactionReference: transactionReference
+        };
+
+        console.log('Order data:', orderData);
+
+        fetch('http://scentsation_api.local/create_order.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(orderData)
+        })
+        .then(response => {
+            console.log('Response:', response);
+            return response.text(); // Change to response.text() to log the raw response
+        })
+        .then(text => {
+            console.log('Response text:', text); // Log the raw response text
+            try {
+                const data = JSON.parse(text); // Parse the JSON from the response text
+                console.log('Data:', data);
+                if (data.success) {
+                    alert('Order created successfully!');
+                    localStorage.removeItem('cart'); // Clear the cart
+                    window.location.href = 'confirmation.html'; // Redirect to confirmation page
+                } else {
+                    alert('Error creating order: ' + data.message);
+                }
+            } catch (e) {
+                console.error('Error parsing JSON:', e);
+                console.error('Raw response text:', text);
+                alert('An error occurred while creating the order.  Check the console for details.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while creating the order.');
+        });
     }
 
     function generateReference() {

@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://scentsation-by-jc-l72e.vercel.app/sitemap.xml

@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function loadProducts() {
-        fetch('http://scensation_api.local/get_inventory.php')
+        fetch('http://scentsation_api.local/get_inventory.php')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok ' + response.status);
@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
             productCard.dataset.quantity = product.quantity; // Set initial quantity
             productCard.innerHTML = `
                 <img src="${product.image}" alt="${product.name}">
-                <h3>${product.name}</h3>
+                <h3>${product.product_name}</h3>
                 <p class="price">₦${product.price.toLocaleString()}</p>
                 <p>${product.description}</p>
                 <p class="available">Available: <span class="available-quantity">${product.quantity}</span></p>
@@ -179,7 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const category = categoryFilter.value;
         const searchTerm = searchInput.value.toLowerCase();
 
-        fetch('http://scensation_api.local/get_inventory.php')
+        fetch('http://scentsation_api.local/get_inventory.php')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok ' + response.status);
@@ -195,13 +195,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (searchTerm !== "") {
                     filteredProducts = filteredProducts.filter(product =>
-                        product.name.toLowerCase().includes(searchTerm) ||
-                        product.description.toLowerCase().includes(searchTerm)
+                        product.product_name.toLowerCase().includes(searchTerm) ||
+                        (product.description && product.description.toLowerCase().includes(searchTerm))
                     );
                 }
 
                 displayProducts(filteredProducts);
-                updateAvailableQuantities(filteredProducts); // Update quantities after filtering
+                updateAvailableQuantities(filteredProducts);
             })
             .catch(error => {
                 console.error('Error fetching products:', error);
@@ -210,27 +210,57 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateProductQuantity(productId, newQuantity) {
+        const formData = new FormData();
+        formData.append('id', productId);
+        formData.append('quantity', newQuantity);
+
+        console.log('Sending request:', {
+            id: productId,
+            quantity: newQuantity
+        });
+
         fetch('http://scentsation_api.local/update_product_quantity.php', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: new URLSearchParams({
-                id: productId,
-                quantity: newQuantity
-            })
+            body: formData,
+            mode: 'cors'
         })
-        .then(response => response.json())
+        .then(async response => {
+            const text = await response.text();
+            console.log('Raw response:', text);
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}, response: ${text}`);
+            }
+
+            try {
+                return JSON.parse(text);
+            } catch (e) {
+                throw new Error(`Invalid JSON response: ${text}`);
+            }
+        })
         .then(data => {
-            if (data.message) {
-                console.log(`Product ${productId} quantity updated successfully.`);
-                loadProducts(); // Reload products to reflect updated quantity
+            console.log('Parsed response:', data);
+            
+            if (data && data.success) {
+                productQuantities[productId] = newQuantity;
+                
+                const productItem = document.querySelector(`.product-item[data-product-id="${productId}"]`);
+                if (productItem) {
+                    const availableQuantitySpan = productItem.querySelector('.available-quantity');
+                    const quantityInput = productItem.querySelector('input[name="quantity"]');
+                    if (availableQuantitySpan) availableQuantitySpan.textContent = newQuantity;
+                    if (quantityInput) quantityInput.max = newQuantity;
+                }
+                
+                showPopupMessage('Product quantity updated successfully');
             } else {
-                console.error(`Error updating product ${productId} quantity:`, data.error);
+                throw new Error(data?.error || 'Unknown error occurred');
             }
         })
         .catch(error => {
             console.error('Error updating product quantity:', error);
+            showPopupMessage('Error updating product quantity. Please try again.');
+            loadProducts();
         });
     }
 
