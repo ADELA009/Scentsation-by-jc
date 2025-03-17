@@ -7,33 +7,33 @@ document.addEventListener('DOMContentLoaded', () => {
     const totalPriceElement = document.getElementById('total-price');
     const placeOrderButton = document.getElementById('place-order-button');
 
-    const locationsByState = {
-        'Lagos': ['Ikeja', 'Victoria Island', 'Lekki', 'Yaba', 'Surulere'],
-        'Abuja': ['Wuse', 'Garki', 'Maitama', 'Asokoro', 'Gwarinpa'],
-        'PortHarcourt': ['GRA', 'Rumuokoro', 'D-Line', 'Eleme'],
-        'Kano': ['Nassarawa', 'Sabon Gari', 'Tarauni', 'Gwale', 'Fagge'],
-        'Ibadan': ['Bodija', 'Ring Road', 'Dugbe', 'Mokola', 'Challenge'],
-        'Ondo': ['Akure post office', 'Owo post office', 'Ondo Town', 'Ikare', 'Okitipupa'],
-        'Edo': ['Benin City', 'Auchi', 'Ikpoba Hill', 'Ugbowo', 'Ekehuan', 'Ekpoma']
-        // Add more states and locations as needed
+    const deliveryFees = {
+        "Lagos": 1000,
+        "Abuja": 1500,
+        "PortHarcourt": 2000,
+        "Kano": 2500,
+        "Ibadan": 1200,
+        "Ondo": 1800,
+        "Edo": 2200
     };
 
-    const deliveryFees = {
-        'Lagos': 1000,
-        'Abuja': 1500,
-        'PortHarcourt': 2000,
-        'Kano': 2500,
-        'Ibadan': 1200,
-        'Ondo': 1800,
-        'Edo': 1600
-        // Add more states and delivery fees as needed
+    let selectedState = null;
+
+    const locations = {
+        "Lagos": ["Ikeja", "Lekki", "Surulere", "Yaba"],
+        "Abuja": ["Garki", "Wuse", "Asokoro", "Gwarimpa"],
+        "PortHarcourt": ["Eleme", "Obio-Akpor", "Oyigbo", "Port Harcourt City"],
+        "Kano": ["Kano Municipal", "Fagge", "Dala", "Nassarawa"],
+        "Ibadan": ["Ibadan North", "Ibadan South West", "Akinyele", "Egbeda"],
+        "Ondo": ["Akure", "Ondo City", "Owo", "Idanre"],
+        "Edo": ["Benin City", "Ekpoma", "Auchi", "Uromi"]
     };
 
     stateSelect.addEventListener('change', () => {
-        const selectedState = stateSelect.value;
+        selectedState = stateSelect.value;
         locationSelect.innerHTML = '<option value="">Select a location</option>';
-        if (selectedState && locationsByState[selectedState]) {
-            locationsByState[selectedState].forEach(location => {
+        if (locations[selectedState]) {
+            locations[selectedState].forEach(location => {
                 const option = document.createElement('option');
                 option.value = location;
                 option.textContent = location;
@@ -43,15 +43,11 @@ document.addEventListener('DOMContentLoaded', () => {
         updateDeliveryFee();
     });
 
-    locationSelect.addEventListener('change', updateDeliveryFee);
-
     function updateDeliveryFee() {
-        const selectedState = stateSelect.value;
         if (selectedState && deliveryFees[selectedState] !== undefined) {
-            const deliveryFee = deliveryFees[selectedState];
             deliveryFeeElement.style.display = 'block';
-            deliveryFeeAmountElement.textContent = deliveryFee.toLocaleString();
-            updateTotalPrice(deliveryFee);
+            deliveryFeeAmountElement.textContent = deliveryFees[selectedState].toLocaleString();
+            updateTotalPrice(deliveryFees[selectedState]);
         } else {
             deliveryFeeElement.style.display = 'none';
             deliveryFeeAmountElement.textContent = '0.00';
@@ -75,6 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
             email: formData.get('email'),
             state: formData.get('state'),
             location: formData.get('location'),
+            phoneNumber: formData.get('phoneNumber'),
             cart: JSON.parse(localStorage.getItem('cart')) || [],
             deliveryFee: parseFloat(deliveryFeeAmountElement.textContent.replace(/,/g, '')),
             totalPrice: parseFloat(totalPriceElement.textContent.replace(/,/g, ''))
@@ -88,12 +85,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function payWithPaystack(orderDetails, publicKey) {
-        const handler = PaystackPop.setup({
-            key: publicKey, // Use the hardcoded Paystack public key
+        const amount = orderDetails.totalPrice * 100; // Amount in kobo
+        const transactionReference = Math.floor((Math.random() * 1000000) + 1) + 'Scent' + new Date().toISOString().slice(0, 10).replace(/-/g, '');
+        let handler = PaystackPop.setup({
+            key: publicKey,
             email: orderDetails.email,
-            amount: orderDetails.totalPrice * 100, // Paystack amount is in kobo
+            amount: amount,
             currency: 'NGN',
-            ref: generateReference(), // Use the generateReference function
+            ref: transactionReference, // Use the generated transaction reference
             metadata: {
                 custom_fields: [
                     {
@@ -102,96 +101,141 @@ document.addEventListener('DOMContentLoaded', () => {
                         value: orderDetails.name
                     },
                     {
-                        display_name: "Pickup Location",
+                        display_name: "Location",
                         variable_name: "location",
                         value: orderDetails.location
                     },
                     {
-                        display_name: "Items",
-                        variable_name: "itemDetails",
-                        value: JSON.stringify(orderDetails.cart) // Stringify the cart
+                        display_name: "State",
+                        variable_name: "state",
+                        value: orderDetails.state
                     },
                     {
-                        display_name: "Delivery Fee",
-                        variable_name: "deliveryFee",
-                        value: orderDetails.deliveryFee
+                        display_name: "Phone Number",
+                        variable_name: "phoneNumber",
+                        value: orderDetails.phoneNumber
                     }
                 ]
             },
-            callback: function(response) {
-                // Payment successful
+            callback: function(response){
+                // Handle successful payment here
                 console.log('Payment successful. Transaction reference:', response.reference);
-
-                // Send order data to the server
-                sendOrderToServer(orderDetails, response.reference);
+                sendOrderToServer(orderDetails, transactionReference);
             },
-            onClose: function() {
-                console.log('Payment window closed.');
+            onClose: function(){
+                alert('Transaction was not completed, something went wrong');
             }
         });
         handler.openIframe();
     }
 
     function sendOrderToServer(orderDetails, transactionReference) {
-        console.log('Sending order to server...');
-        console.log('Order details:', orderDetails);
-        console.log('Transaction reference:', transactionReference);
-
         const orderData = {
             customerName: orderDetails.name,
             email: orderDetails.email,
             state: orderDetails.state,
             location: orderDetails.location,
+            phoneNumber: orderDetails.phoneNumber,
             deliveryFee: orderDetails.deliveryFee,
             total: orderDetails.totalPrice,
-            items: orderDetails.cart,
-            transactionReference: transactionReference
+            items: orderDetails.cart.map(item => ({
+                product_id: item.id,
+                name: item.name,
+                quantity: item.quantity,
+                price: item.price
+            })),
+            transactionReference: transactionReference,
+            status: 'paid' // Add payment status
         };
 
-        console.log('Order data:', orderData);
+        console.log('Sending order data:', orderData);
 
-        fetch('http://scentsation_api.local/create_order.php', {
+        return fetch('http://scentsation_api.local/create_order.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(orderData)
         })
-        .then(response => {
-            console.log('Response:', response);
-            return response.text(); // Change to response.text() to log the raw response
-        })
-        .then(text => {
-            console.log('Response text:', text); // Log the raw response text
+        .then(async response => {
+            const text = await response.text();
+            console.log('Raw response:', text);
+
             try {
-                const data = JSON.parse(text); // Parse the JSON from the response text
-                console.log('Data:', data);
-                if (data.success) {
-                    alert('Order created successfully!');
-                    localStorage.removeItem('cart'); // Clear the cart
-                    window.location.href = 'confirmation.html'; // Redirect to confirmation page
-                } else {
-                    alert('Error creating order: ' + data.message);
+                // Clean up any HTML/PHP warnings from the response
+                const jsonMatch = text.match(/\{[\s\S]*\}/);
+                const jsonData = jsonMatch ? JSON.parse(jsonMatch[0]) : JSON.parse(text);
+
+                if (!jsonData.success) {
+                    throw new Error(jsonData.message || 'Order creation failed');
                 }
+
+                // Store order ID in localStorage for reference
+                if (jsonData.orderId) {
+                    localStorage.setItem('lastOrderId', jsonData.orderId);
+                }
+
+                // Send SMS
+                sendSMS(orderDetails.name, orderDetails.totalPrice, transactionReference, orderDetails.phoneNumber);
+
+                // Update product quantities and clear cart
+                return updateProductQuantities(orderDetails.cart)
+                    .then(() => {
+                        localStorage.removeItem('cart');
+                        window.location.href = `confirmation.html?ref=${transactionReference}`;
+                    });
             } catch (e) {
-                console.error('Error parsing JSON:', e);
-                console.error('Raw response text:', text);
-                alert('An error occurred while creating the order.  Check the console for details.');
+                console.error('Failed to parse response:', text);
+                throw new Error('Invalid server response');
             }
         })
         .catch(error => {
-            console.error('Error:', error);
-            alert('An error occurred while creating the order.');
+            console.error('Error creating order:', error);
+            alert('Failed to create order: ' + error.message);
         });
     }
 
-    function generateReference() {
-        const randomNumbers = Math.floor((Math.random() * 2000000) + 1);
-        const currentDate = new Date();
-        const formattedDate = currentDate.toISOString().slice(0, 10); // YYYY-MM-DD
-        return `${randomNumbers}Scent${formattedDate}`;
+    // Add this new function to update product quantities
+    function updateProductQuantities(cartItems) {
+        const updates = cartItems.map(item => {
+            return fetch('http://scentsation_api.local/update_product_quantity.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: `id=${item.id}&quantity=${-item.quantity}` // Negative to decrease stock
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (!data.success) {
+                    throw new Error(`Failed to update quantity for product ${item.id}`);
+                }
+            });
+        });
+
+        return Promise.all(updates);
     }
 
-    // Initial update of delivery fee and total price
-    updateDeliveryFee();
+    function sendSMS(customerName, totalPrice, transactionReference, phoneNumber) {
+        const message = `Dear ${customerName}, your Scentsation by JC order of ₦${totalPrice.toLocaleString()} is successful. Ref: ${transactionReference}`;
+
+        fetch('http://scentsation_api.local/send_sms.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `phoneNumber=${phoneNumber}&message=${encodeURIComponent(message)}`
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log('SMS sent successfully:', data);
+            } else {
+                console.error('Failed to send SMS:', data);
+            }
+        })
+        .catch(error => {
+            console.error('Error sending SMS:', error);
+        });
+    }
 });

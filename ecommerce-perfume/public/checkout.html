@@ -74,6 +74,9 @@
                 
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" autocomplete="email" required>
+
+                <label for="phoneNumber">Phone Number:</label>
+                <input type="tel" id="phoneNumber" name="phoneNumber" autocomplete="tel" required>
                 
                 <p id="delivery-fee" style="display: none;">Delivery Fee: ₦<span id="delivery-fee-amount">0.00</span></p>
                 <p>Total Price: ₦<span id="total-price">0.00</span></p>
@@ -86,5 +89,30 @@
     <footer>
         <p>&copy; 2025 Scentsation by JC. All rights reserved.</p>
     </footer>
+
+    <script>
+        function sendSMS(customerName, totalPrice, transactionReference, phoneNumber) {
+            const message = `Dear ${customerName}, your Scentsation by JC order of ₦${totalPrice.toLocaleString()} is successful. Ref: ${transactionReference}`;
+
+            fetch('http://scentsation_api.local/send_sms.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: `phoneNumber=${phoneNumber}&message=${encodeURIComponent(message)}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('SMS sent successfully:', data);
+                } else {
+                    console.error('Failed to send SMS:', data);
+                }
+            })
+            .catch(error => {
+                console.error('Error sending SMS:', error);
+            });
+        }
+    </script>
 </body>
 </html>

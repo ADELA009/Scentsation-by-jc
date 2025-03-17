@@ -113,16 +113,74 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function removeFromCart(productId) {
-        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
         const productIndex = cart.findIndex(item => item.id === productId);
 
         if (productIndex !== -1) {
-            const product = cart[productIndex];
+            const removedItem = cart[productIndex];
             cart.splice(productIndex, 1);
             localStorage.setItem('cart', JSON.stringify(cart));
-            showPopupMessage(`Removed ${product.name} from cart!`);
-            updateCartCount(); // Update cart count after removing product
+            showPopupMessage(`Removed ${removedItem.name} from cart!`);
+            updateCartCount();
+
+            // Increase the available quantity by the removed amount
+            updateProductAvailability(productId, removedItem.quantity);
         }
+    }
+
+    // This function adds back the returnedQuantity into the product's available stock
+    function updateProductAvailability(productId, returnedQuantity) {
+        // Get the current available quantity from a global productQuantities object (set during loadProducts)
+        // If productQuantities is not global, you might need to fetch fresh data or store it in both files.
+        let currentQuantity = window.productQuantities && window.productQuantities[productId] ? window.productQuantities[productId] : 0;
+        const newQuantity = currentQuantity + returnedQuantity;
+
+        const formData = new FormData();
+        formData.append('id', productId);
+        formData.append('quantity', newQuantity);
+
+        console.log('Updating availability for product:', { productId, newQuantity });
+
+        fetch('http://scentsation_api.local/update_product_quantity.php', {
+            method: 'POST',
+            body: formData,
+            mode: 'cors'
+        })
+        .then(async response => {
+            const text = await response.text();
+            console.log('Raw response (availability update):', text);
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}, response: ${text}`);
+            }
+
+            try {
+                return JSON.parse(text);
+            } catch (e) {
+                throw new Error(`Invalid JSON response: ${text}`);
+            }
+        })
+        .then(data => {
+            console.log('Parsed availability response:', data);
+            if (data && data.success) {
+                // Update the global productQuantities and UI accordingly
+                window.productQuantities[productId] = newQuantity;
+                const productItem = document.querySelector(`.product-item[data-product-id="${productId}"]`);
+                if (productItem) {
+                    const availableQuantitySpan = productItem.querySelector('.available-quantity');
+                    const quantityInput = productItem.querySelector('input[name="quantity"]');
+                    if (availableQuantitySpan) availableQuantitySpan.textContent = newQuantity;
+                    if (quantityInput) quantityInput.max = newQuantity;
+                }
+                showPopupMessage('Product availability updated successfully');
+            } else {
+                throw new Error(data?.error || 'Unknown error occurred in availability update');
+            }
+        })
+        .catch(error => {
+            console.error('Error updating product availability:', error);
+            showPopupMessage('Error updating availability. Please try again.');
+        });
     }
 
     function loadProducts() {
@@ -265,4 +323,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     loadProducts(); // Load all products by default
+
+    // Bind removeFromCart events if necessary (e.g., on delete buttons in your cart page)
+    // Example:
+    document.querySelectorAll('.remove-from-cart-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const productId = button.getAttribute('data-product-id');
+            removeFromCart(productId);
+        });
+    });
 });
